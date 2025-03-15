@@ -118,26 +118,34 @@
             return;
             }
             
-            fetch('https://script.google.com/macros/s/AKfycbzcN5cLV0yo8UW_4T61Bu7rgYOY1-tPa27hxM5E8gk2NH3wPGN_A_3oD8G1MDPS3ih_qw/exec', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(borrowData)
-})
-.then(response => {
-  if (!response.ok) {
-    throw new Error('回應失敗');
-  }
-  return response.json();
-})
-.then(data => {
-  console.log('成功:', data);
-})
-.catch(error => {
-  console.error('錯誤:', error);
-}); 
- }  
+            // 構建查詢參數
+    const queryParams = new URLSearchParams({
+        className: borrowData.className,
+        seat: borrowData.seat,
+        tabletId: borrowData.tabletId,
+        status: borrowData.status
+    });
+
+    // 發送 GET 請求
+    fetch(`https://script.google.com/macros/s/AKfycbypTq3acqXKl3G21xhUhi9URa4KNKJAXlsDw1mEchkbnoQu3byPXG6OAHEKDO4j01_2CA/exec?${queryParams}`, {
+        method: 'GET',
+    })
+    .then(response => {
+        console.log('回應狀態碼:', response.status);
+        if (!response.ok) {
+            throw new Error('回應錯誤，狀態碼: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('成功的回應:', data);
+        alert("借用紀錄已提交成功！");
+    })
+    .catch(error => {
+        console.error('錯誤訊息:', error.message);
+        alert("資料提交失敗，請確認後端配置或檢查網路請求。");
+    });
+}
         function confirmReturn() {
             alert("平板已確認歸還。");
         }
