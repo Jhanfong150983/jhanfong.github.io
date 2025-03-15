@@ -87,6 +87,7 @@
         let borrowData = {};
         
         function submitBorrow() {
+            console.log("提交借用紀錄的函數已觸發");  // 輸出訊息到控制台
             borrowData.className = document.getElementById("class").value.trim();
             borrowData.seat = document.getElementById("seat").value.trim();
             borrowData.tabletId = document.getElementById("tabletId").value.trim();
