@@ -117,35 +117,32 @@
             alert("請填寫平板使用前狀況。");
             return;
             }
-            
-            // 構建查詢參數
-    const queryParams = new URLSearchParams({
-        className: borrowData.className,
-        seat: borrowData.seat,
-        tabletId: borrowData.tabletId,
-        status: borrowData.status
-    });
 
-    // 發送 GET 請求
-    fetch(`https://script.google.com/macros/s/AKfycbypTq3acqXKl3G21xhUhi9URa4KNKJAXlsDw1mEchkbnoQu3byPXG6OAHEKDO4j01_2CA/exec?${queryParams}`, {
-        method: 'GET',
-    })
-    .then(response => {
-        console.log('回應狀態碼:', response.status);
-        if (!response.ok) {
-            throw new Error('回應錯誤，狀態碼: ' + response.status);
+            // 發送 POST 請求
+            fetch('https://script.google.com/macros/s/AKfycbxONlC3DEiIPFHmXK4cRbptiXklDndRMmfJ4bEHGqM7bqY9w4-G3EI5w7YfH07nCfJq/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(borrowData)  // 送出 JSON 格式的資料
+            })
+            .then(response => {
+                console.log('回應狀態碼:', response.status);
+                if (!response.ok) {
+                    throw new Error('回應錯誤，狀態碼: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('成功的回應:', data);
+                alert("借用紀錄已提交成功！");
+            })
+            .catch(error => {
+                console.error('錯誤訊息:', error.message);
+                alert("資料提交失敗，請確認後端配置或檢查網路請求。");
+            });
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('成功的回應:', data);
-        alert("借用紀錄已提交成功！");
-    })
-    .catch(error => {
-        console.error('錯誤訊息:', error.message);
-        alert("資料提交失敗，請確認後端配置或檢查網路請求。");
-    });
-}
+        
         function confirmReturn() {
             alert("平板已確認歸還。");
         }
@@ -164,7 +161,7 @@
             }
 
             alert(`損壞報告提交：\n${damageStatus}`);
-    }
+        }
     </script>
 </body>
 </html>
