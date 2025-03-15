@@ -125,16 +125,21 @@
             },
             body: JSON.stringify(borrowData)
             })
-            .then(response => response.json())
-            .then(data => {
-            alert("借用紀錄已提交成功！");
-            document.getElementById("borrowPage").classList.add("hidden");
-            document.getElementById("returnPage").classList.remove("hidden");
-            })
-            .catch(error => {
-            console.error('錯誤:', error);  // 顯示具體錯誤
-            alert("資料提交失敗。請稍後再試。");
-            });
+            .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    alert("借用紀錄已提交成功！");
+    document.getElementById("borrowPage").classList.add("hidden");
+    document.getElementById("returnPage").classList.remove("hidden");
+})
+.catch(error => {
+    console.error('錯誤:', error);  // 顯示具體錯誤
+    alert("資料提交失敗。請稍後再試。");
+});
         }
         
         function confirmReturn() {
