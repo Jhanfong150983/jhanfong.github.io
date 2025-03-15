@@ -118,7 +118,7 @@
             return;
             }
             
-            fetch('https://script.google.com/a/macros/tmail.hc.edu.tw/s/AKfycbxjaHdp3soxdSgd73AImgwhFEPbbiiNf99pO4DlK_if_FW8Nlvx4TFOGbPxfxcy2gd0/exec', {
+            fetch('https://script.google.com/a/macros/tmail.hc.edu.tw/s/AKfycbwR1TTTnF7ZwBIQ2Qrc1E8G_0cq_1ljrlAvdYisZdaILo_WUK_V3IFS7N8kjqut5XYG/exec', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -132,7 +132,7 @@
             document.getElementById("returnPage").classList.remove("hidden");
             })
             .catch(error => {
-            console.error('錯誤:', error);
+            console.error('錯誤:', error);  // 顯示具體錯誤
             alert("資料提交失敗。請稍後再試。");
             });
         }
