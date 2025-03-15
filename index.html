@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平板借用與歸還系統</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
+        .hidden { display: none; }
+    </style>
+</head>
+
+<body>
+    <div id="borrowPage">
+        <h2>平板借用記錄</h2>
+        
+        <label for="class">班級：</label>
+        <input type="text" id="class" placeholder="例如：305">
+        
+        <label for="seat">座號：</label>
+        <input type="number" id="seat" placeholder="例如：12">
+        
+        <label for="tabletId">平板編號：</label>
+        <input type="text" id="tabletId" placeholder="例如：G-18">
+        
+        <label for="beforestatus">使用前狀況：</label>
+        <select id="beforestatus">
+            <option value="正常">正常，沒有任何問題</option>
+            <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
+            <option value="面板破裂">平板有破裂，可能會割傷手指</option>
+            <option value="無法使用">平板完全無法使用</option>
+            <option value="其他1">其他（請自行填寫狀況）</option>
+        </select>
+        
+        <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
+        
+        <button onclick="submitBorrow()">提交借用紀錄</button>
+    </div>
+    
+    <div id="returnPage" class="hidden">
+        <h2>平板歸還與損壞記錄</h2>
+        
+        <h3>借用時記錄：</h3>
+        <p id="borrowSummary"></p>
+        
+        <h4>要歸還平板時，請將此網頁與平板交由授課老師或班級資訊長進行檢查與填寫</h4>
+        <h4>下方按鈕只能由授課教師或資訊長確認</h4>
+        <label>平板狀況與借用前一致，確認歸還</label>
+        <button onclick="confirmReturn()">確認歸還</button>
+
+        <label for="afterstatus">平板狀況與借用前不一致，回報損壞</label>
+        <select id="afterstatus">
+            <option value="出現新裂痕">原本正常，使用後出現裂痕</option>
+            <option value="出現新破裂">原本正常，使用後出現破裂</option>
+            <option value="裂痕更加嚴重">原本有裂痕，使用後出現新的裂痕</option>
+            <option value="裂痕加深為破裂">原本有裂痕，使用後出現新的破裂</option>
+            <option value="其他2">其他（請自行填寫狀況）</option>
+        </select>
+
+        <input type="text" id="customStatus2" class="hidden" placeholder="請描述其他新增的損壞">
+        <button onclick="reportDamage()">回報損壞</button>
+    </div>
+    
+    <script>
+        document.getElementById("beforestatus").addEventListener("change", function() {
+            let customStatus = document.getElementById("customStatus1");
+            if (this.value === "其他1") {
+                customStatus.classList.remove("hidden");
+            } else {
+                customStatus.classList.add("hidden");
+                customStatus.value = "";
+            }
+        });
+
+        document.getElementById("afterstatus").addEventListener("change", function() {
+            let customStatus = document.getElementById("customStatus2");
+            if (this.value === "其他2") {
+                customStatus.classList.remove("hidden");
+            } else {
+                customStatus.classList.add("hidden");
+                customStatus.value = "";
+            }
+        });
+
+        let borrowData = {};
+        
+        function submitBorrow() {
+            borrowData.className = document.getElementById("class").value.trim();
+            borrowData.seat = document.getElementById("seat").value.trim();
+            borrowData.tabletId = document.getElementById("tabletId").value.trim();
+            borrowData.status = document.getElementById("beforestatus").value.trim();
+            let customStatus = document.getElementById("customStatus1").value.trim();
+            
+            if (borrowData.status === "其他1") {
+                borrowData.status = customStatus;
+            }
+            
+            if (!borrowData.className) {
+            alert("請填寫班級。");
+            return;
+            }
+
+            if (!borrowData.seat) {
+            alert("請填寫座號。");
+            return;
+            }
+
+            if (!borrowData.tabletId) {
+            alert("請填寫平板編號。");
+            return;
+            }
+
+            if (!borrowData.status) {
+            alert("請填寫平板使用前狀況。");
+            return;
+            }
+
+            console.log("Submit data:", borrowData);  // 顯示資料內容
+
+            fetch("YOUR_GOOGLE_APPS_SCRIPT_URL", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(borrowData) // 確保將資料轉換為 JSON 格式
+            })
+            .then(response => response.text())
+            .then(data => {
+            console.log(data);  // 顯示從後端返回的結果
+            alert(data);  // 顯示從後端返回的結果
+            })
+            .catch(error => {
+            console.error("Error:", error);
+            alert("資料提交失敗");
+            });
+        }
+        
+        function confirmReturn() {
+            alert("平板已確認歸還。");
+        }
+        
+        function reportDamage() {
+            let damageStatus = document.getElementById("afterstatus").value;
+            let customStatus = document.getElementById("customStatus2").value;
+
+            if (damageStatus === "其他2") {
+            damageStatus = customStatus;
+            }
+
+            if (!damageStatus.trim()) {
+            alert("請填寫損壞描述。");
+            return;
+            }
+
+            alert(`損壞報告提交：\n${damageStatus}`);
+    }
+    </script>
+</body>
+</html>
