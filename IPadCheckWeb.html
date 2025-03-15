@@ -116,6 +116,24 @@
             alert("請填寫平板使用前狀況。");
             return;
             }
+            
+            fetch('https://script.google.com/a/macros/tmail.hc.edu.tw/s/AKfycbxjaHdp3soxdSgd73AImgwhFEPbbiiNf99pO4DlK_if_FW8Nlvx4TFOGbPxfxcy2gd0/exec', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(borrowData)
+            })
+            .then(response => response.json())
+            .then(data => {
+            alert("借用紀錄已提交成功！");
+            document.getElementById("borrowPage").classList.add("hidden");
+            document.getElementById("returnPage").classList.remove("hidden");
+            })
+            .catch(error => {
+            console.error('錯誤:', error);
+            alert("資料提交失敗。請稍後再試。");
+            });
         }
         
         function confirmReturn() {
