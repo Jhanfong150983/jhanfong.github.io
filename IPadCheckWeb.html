@@ -86,62 +86,48 @@
 
         let borrowData = {};
         
-        function submitBorrow() {
-            console.log("提交借用紀錄的函數已觸發");  // 輸出訊息到控制台
-            borrowData.className = document.getElementById("class").value.trim();
-            borrowData.seat = document.getElementById("seat").value.trim();
-            borrowData.tabletId = document.getElementById("tabletId").value.trim();
-            borrowData.status = document.getElementById("beforestatus").value.trim();
-            let customStatus = document.getElementById("customStatus1").value.trim();
-            
-            if (borrowData.status === "其他1") {
-                borrowData.status = customStatus;
-            }
-            
-            if (!borrowData.className) {
-            alert("請填寫班級。");
-            return;
-            }
+    function submitBorrow() {
+    console.log("提交借用紀錄的函數已觸發");
+    borrowData.className = document.getElementById("class").value.trim();
+    borrowData.seat = document.getElementById("seat").value.trim();
+    borrowData.tabletId = document.getElementById("tabletId").value.trim();
+    borrowData.status = document.getElementById("beforestatus").value.trim();
+    let customStatus = document.getElementById("customStatus1").value.trim();
+    
+    if (borrowData.status === "其他1") {
+        borrowData.status = customStatus;
+    }
+    
+    // 檢查輸入是否正確
+    if (!borrowData.className || !borrowData.seat || !borrowData.tabletId || !borrowData.status) {
+        alert("請填寫所有必填欄位！");
+        return;
+    }
 
-            if (!borrowData.seat) {
-            alert("請填寫座號。");
-            return;
-            }
+    // 使用 GET 方法並將資料作為 URL 查詢參數
+    const url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
+    url.searchParams.append('className', borrowData.className);
+    url.searchParams.append('seat', borrowData.seat);
+    url.searchParams.append('tabletId', borrowData.tabletId);
+    url.searchParams.append('status', borrowData.status);
 
-            if (!borrowData.tabletId) {
-            alert("請填寫平板編號。");
-            return;
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('回應錯誤，狀態碼: ' + response.status);
             }
+            return response.json();
+        })
+        .then(data => {
+            console.log('成功的回應:', data);
+            alert("借用紀錄已提交成功！");
+        })
+        .catch(error => {
+            console.error('錯誤訊息:', error.message);
+            alert("資料提交失敗，請確認後端配置或檢查網路請求。");
+        });
+}
 
-            if (!borrowData.status) {
-            alert("請填寫平板使用前狀況。");
-            return;
-            }
-
-            // 發送 POST 請求
-            fetch('https://script.google.com/macros/s/AKfycbyd1Ui5uWV9iq9eNbxAnkUqy3i9UH8vZVQXn8cJkVZbxDSbZQdsTiVA-bf0KSxBEGcr/exec', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(borrowData)  // 送出 JSON 格式的資料
-            })
-            .then(response => {
-                console.log('回應狀態碼:', response.status);
-                if (!response.ok) {
-                    throw new Error('回應錯誤，狀態碼: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('成功的回應:', data);
-                alert("借用紀錄已提交成功！");
-            })
-            .catch(error => {
-                console.error('錯誤訊息:', error.message);
-                alert("資料提交失敗，請確認後端配置或檢查網路請求。");
-            });
-        }
         
         function confirmReturn() {
             alert("平板已確認歸還。");
