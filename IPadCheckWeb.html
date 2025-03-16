@@ -72,6 +72,12 @@
             outline: none;
             border-color: rgb(85, 144, 144);
         }
+        
+        .locked {
+        background-color: #e0e0e0; /* 灰色背景 */
+        pointer-events: none;  /* 禁用鼠标事件 */
+        opacity: 0.6; /* 让禁用的字段看起来不那么显眼 */
+        }
 
         /* 隱藏自訂輸入框 */
         .hidden {
@@ -214,7 +220,7 @@
 
             fetch(url)
                 .then(response => response.json())
-                .then(data => alert("借用紀錄已提交成功！"))
+                .then(data => alert("使用前紀錄已提交成功！"))
                 .catch(error => alert("提交失敗！"));
         }
 
