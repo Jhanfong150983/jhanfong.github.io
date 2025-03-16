@@ -132,6 +132,43 @@
             cursor: not-allowed;
         }
 
+
+
+        .dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 背景半透明 */
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+}
+
+.dialog button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    background-color: #5CAF5A;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.dialog button:hover {
+    background-color: #4a8c4a;
+}
+
+        
     </style>
 </head>
 <body>
@@ -168,11 +205,18 @@
         <h3>歸還檢查</h3>
         <h4>請將平板歸還給授課教師或資訊長進行檢查</h4>
         <div class="button-group">
-            <button id="returnNoIssue" onclick="submitReturn('沒有問題')">沒有問題</button>
-            <button id="returnIssue" onclick="reportIssue()">有問題</button>
+            <button id="report" onclick="submitreport('檢查回報')">檢查回報</button>
         </div>
     </div>
 
+    <div id="customDialog" class="dialog">
+    <div class="dialog-content">
+        <h3>是否有問題回報？</h3>
+        <button id="problemBtn">有問題</button>
+        <button id="noProblemBtn">沒問題</button>
+    </div>
+    </div>
+    
     <script>
         document.getElementById("beforestatus").addEventListener("change", function() {
             let customStatus = document.getElementById("customStatus1");
@@ -203,14 +247,17 @@
                 return;
             }
 
+            let submitButton = document.querySelector('button[onclick="lockAndSubmit()"]');
+            submitButton.disabled = true; // 禁用按鈕
+            submitButton.style.display = 'none'; // 隱藏按鈕
+
             document.getElementById("class").classList.add("locked");
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
 
-            document.getElementById("returnNoIssue").disabled = false;
-            document.getElementById("returnIssue").disabled = false;
+            document.getElementById("submitreport").disabled = false;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
@@ -223,22 +270,34 @@
                 .then(data => alert("使用前紀錄已提交成功！"))
                 .catch(error => alert("提交失敗！"));
         }
-
-        function reportIssue() {
-            if (document.getElementById("class").classList.contains("locked")) {
-                let damage = prompt("請描述新增的問題：");
-                if (damage) submitReturn(damage);
-            } else {
-                alert("請先完成使用前紀錄！");
-            }
-        }
-
-        function submitReturn(status) {
+        function submitreport(status) {
             if (!document.getElementById("class").classList.contains("locked")) {
                 alert("請先完成使用前紀錄！");
                 return;
             }
 
+            // 顯示自定義對話框
+            document.getElementById("customDialog").style.display = "flex";
+
+            // 按下"有問題"按鈕
+            document.getElementById("problemBtn").addEventListener("click", function() {
+            let issue = prompt("請描述問題：");
+            if (!issue) {
+            alert("請描述問題！");
+            return;
+            }
+            submitData(issue);  // 傳送問題描述
+            document.getElementById("customDialog").style.display = "none";  // 關閉對話框
+            });
+
+            // 按下"沒問題"按鈕
+            document.getElementById("noProblemBtn").addEventListener("click", function() {
+            submitData("沒有問題");  // 直接傳送"沒有問題"
+            document.getElementById("customDialog").style.display = "none";  // 關閉對話框
+            });
+        }
+
+        function submitData(status) {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
