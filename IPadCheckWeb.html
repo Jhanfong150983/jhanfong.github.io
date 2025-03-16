@@ -51,13 +51,14 @@
             margin-bottom: 20px;
         }
 
-        /* 輸入框和標籤的排版 */
+        /* 標籤 */
         label {
             font-size: 1rem;
             color: rgb(151, 149, 149);
             display: block;
         }
-
+        
+        /* 輸入框、選項清單、按鈕的排版 */
         input, select, button {
             width: 100%;
             padding: 10px;
@@ -133,45 +134,45 @@
         }
 
 
-
+         /* 自定義對話視窗 */
         .dialog {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 背景半透明 */
-    justify-content: center;
-    align-items: center;
-}
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* 背景半透明 */
+        justify-content: center;
+        align-items: center;
+        }
 
-.dialog-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: 300px;
-}
+        .dialog-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 300px;
+        }
 
-.dialog button {
-    padding: 10px;
-    margin: 10px;
-    border: none;
-    background-color: #5CAF5A;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
+        .dialog button {
+        padding: 10px;
+        margin: 10px;
+        border: none;
+        background-color: #5CAF5A;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        }
 
-.dialog button:hover {
-    background-color: #4a8c4a;
-}
-
-        
+        .dialog button:hover {
+        background-color: #4a8c4a;
+        }
     </style>
 </head>
+
 <body>
+     /* 背景區 */
     <div class="container">
         <h2>關埔國小平板借用與歸還紀錄系統</h2>
         <h3>使用前檢查與紀錄</h3>
@@ -183,8 +184,24 @@
         <input type="number" id="seat" placeholder="例如：12">
 
         <label for="tabletIdPrefix">平板編號：</label>
+        
         <div class="tablet-id-container">
-            <input type="text" id="tabletIdPrefix" placeholder="例如：G">
+        <select id="tabletIdPrefix">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="I">I</option>
+            <option value="J">J</option>
+            <option value="K">K</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="N">N</option>
+        </select>
             <span class="tablet-id-separator">-</span>
             <input type="text" id="tabletIdNumber" placeholder="例如：18">
         </div>
@@ -204,6 +221,7 @@
 
         <h3>歸還檢查</h3>
         <h4>請將平板歸還給授課教師或資訊長進行檢查</h4>
+        
         <div class="button-group">
             <button id="report" onclick="submitreport('檢查回報')" style="display: none;">授課教師或資訊長檢查</button>
         </div>
@@ -253,7 +271,7 @@
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
 
-            document.getElementById("beforereport").disabled = false; // 顯示檢查回報按鈕
+            document.getElementById("beforereport").disabled = true; // 顯示檢查回報按鈕
             document.getElementById("report").style.display = 'block'; // 顯示檢查回報按鈕
             
             submitData1("沒有問題");
