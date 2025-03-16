@@ -205,7 +205,7 @@
         <h3>歸還檢查</h3>
         <h4>請將平板歸還給授課教師或資訊長進行檢查</h4>
         <div class="button-group">
-            <button id="report" onclick="submitreport('檢查回報')">授課教師或資訊長檢查</button>
+            <button id="report" onclick="submitreport('檢查回報')" style="display: none;">授課教師或資訊長檢查</button>
         </div>
     </div>
 
@@ -257,7 +257,7 @@
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
 
-            document.getElementById("submitreport").disabled = false;
+            document.getElementById("report").style.display = 'block'; // 顯示檢查回報按鈕
 
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
