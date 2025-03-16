@@ -8,31 +8,33 @@
         body { font-family: Arial, sans-serif; margin: 20px; }
         label { display: block; margin-top: 10px; }
         input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
-        .hidden { display: none; } /* 隱藏元素的樣式 */
-        .locked { background-color: #e0e0e0; pointer-events: none; } /* 鎖定輸入框的樣式 */
-        .tablet-id-container { display: flex; align-items: center; gap: 5px; } /* 讓平板編號的輸入框橫向排列 */
-        .tablet-id-container input { width: 45%; } /* 設定輸入框寬度 */
-        .tablet-id-separator { font-size: 18px; font-weight: bold; } /* 設定分隔符號的樣式 */
+        .hidden { display: none; }
+        .locked { background-color: #e0e0e0; pointer-events: none; }
+        .tablet-id-container { display: flex; align-items: center; gap: 5px; }
+        .tablet-id-container input { width: 45%; }
+        .tablet-id-separator { font-size: 18px; font-weight: bold; }
+        .button-group { display: flex; gap: 10px; margin-top: 10px; }
+        .button-group button { flex: 1; }
     </style>
 </head>
 <body>
     <h2>平板借用與歸還</h2>
     
     <label for="class">班級：</label>
-    <input type="text" id="class" placeholder="例如：305"> <!-- 班級輸入框 -->
+    <input type="text" id="class" placeholder="例如：305">
     
     <label for="seat">座號：</label>
-    <input type="number" id="seat" placeholder="例如：12"> <!-- 座號輸入框 -->
+    <input type="number" id="seat" placeholder="例如：12">
     
     <label for="tabletIdPrefix">平板編號：</label>
     <div class="tablet-id-container">
-        <input type="text" id="tabletIdPrefix" placeholder="例如：G">  <!-- 平板編號的字母部分 -->
-        <span class="tablet-id-separator">-</span> <!-- 分隔符號 -->
-        <input type="text" id="tabletIdNumber" placeholder="例如：18"> <!-- 平板編號的數字部分 -->
+        <input type="text" id="tabletIdPrefix" placeholder="例如：G">
+        <span class="tablet-id-separator">-</span>
+        <input type="text" id="tabletIdNumber" placeholder="例如：18">
     </div>
     
     <label for="beforestatus">使用前狀況：</label>
-    <select id="beforestatus"> <!-- 選擇使用前平板狀況的下拉選單 -->
+    <select id="beforestatus">
         <option value="正常">正常，沒有任何問題</option>
         <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
         <option value="面板破裂">平板有破裂，可能會割傷手指</option>
@@ -40,21 +42,24 @@
         <option value="其他1">其他（請自行填寫狀況）</option>
     </select>
     
-    <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況"> <!-- 若選擇其他，則顯示此輸入框 -->
+    <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
     
-    <button onclick="lockAndSubmit()">鎖定並提交借用紀錄</button> <!-- 鎖定輸入並提交資料 -->
+    <button onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
     
     <h3>歸還檢查</h3>
-    <button onclick="confirmReturn()">歸還平板</button> <!-- 提交歸還紀錄 -->
+    <div class="button-group">
+        <button onclick="submitReturn('沒有問題')">沒有問題</button>
+        <button onclick="reportIssue()">有問題</button>
+    </div>
     
     <script>
         document.getElementById("beforestatus").addEventListener("change", function() {
             let customStatus = document.getElementById("customStatus1");
             if (this.value === "其他1") {
-                customStatus.classList.remove("hidden"); // 顯示輸入框
+                customStatus.classList.remove("hidden");
             } else {
-                customStatus.classList.add("hidden"); // 隱藏輸入框
-                customStatus.value = ""; // 清除輸入值
+                customStatus.classList.add("hidden");
+                customStatus.value = "";
             }
         });
         
@@ -66,7 +71,7 @@
             let status = document.getElementById("beforestatus").value.trim();
             let customStatus = document.getElementById("customStatus1").value.trim();
             
-            let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`; // 合併平板編號
+            let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
             
             if (status === "其他1") {
                 status = customStatus;
@@ -77,7 +82,6 @@
                 return;
             }
             
-            // 鎖定輸入欄位
             document.getElementById("class").classList.add("locked");
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
@@ -96,14 +100,9 @@
                 .catch(error => alert("提交失敗！"));
         }
         
-        function confirmReturn() {
-            let confirmation = confirm("請選擇平板狀況：\n確定無問題請按「確定」\n有問題請按「取消」並填寫損壞內容");
-            if (confirmation) {
-                submitReturn("沒有問題");
-            } else {
-                let damage = prompt("請描述新增的問題：");
-                if (damage) submitReturn(damage);
-            }
+        function reportIssue() {
+            let damage = prompt("請描述新增的問題：");
+            if (damage) submitReturn(damage);
         }
         
         function submitReturn(status) {
@@ -114,7 +113,7 @@
             let beforeStatus = document.getElementById("beforestatus").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
             
-            let url = new URL('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
