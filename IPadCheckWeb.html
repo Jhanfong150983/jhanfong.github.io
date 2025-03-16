@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>平板借用與歸還系統</title>
+    <title>關埔國小平板借用與歸還紀錄系統</title>
     <style>
+         h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: normal;
+      color: #34495e;
+      margin-bottom: 18px;
+      text-transform: capitalize;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: lighter;
+      color: #7f8c8d;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
         body { font-family: Arial, sans-serif; margin: 20px; }
         label { display: block; margin-top: 10px; }
         input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
@@ -15,11 +39,13 @@
         .tablet-id-separator { font-size: 18px; font-weight: bold; }
         .button-group { display: flex; gap: 10px; margin-top: 10px; }
         .button-group button { flex: 1; }
+        
     </style>
 </head>
 <body>
-    <h2>平板借用與歸還</h2>
-    
+    <h2>關埔國小平板借用與歸還紀錄系統</h2>
+    <h3>使用前檢查與紀錄</h3>
+  
     <label for="class">班級：</label>
     <input type="text" id="class" placeholder="例如：305">
     
@@ -48,8 +74,8 @@
     
     <h3>歸還檢查</h3>
     <div class="button-group">
-        <button onclick="submitReturn('沒有問題')">沒有問題</button>
-        <button onclick="reportIssue()">有問題</button>
+        <button id="returnNoIssue" onclick="submitReturn('沒有問題')">沒有問題</button>
+        <button id="returnIssue" onclick="reportIssue()">有問題</button>
     </div>
     
     <script>
@@ -88,6 +114,9 @@
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
             
+            document.getElementById("returnNoIssue").disabled = false;
+            document.getElementById("returnIssue").disabled = false;
+            
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -101,11 +130,20 @@
         }
         
         function reportIssue() {
-            let damage = prompt("請描述新增的問題：");
-            if (damage) submitReturn(damage);
+            if (document.getElementById("class").classList.contains("locked")) {
+                let damage = prompt("請描述新增的問題：");
+                if (damage) submitReturn(damage);
+            } else {
+                alert("請先完成使用前紀錄！");
+            }
         }
         
         function submitReturn(status) {
+            if (!document.getElementById("class").classList.contains("locked")) {
+                alert("請先完成使用前紀錄！");
+                return;
+            }
+            
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
