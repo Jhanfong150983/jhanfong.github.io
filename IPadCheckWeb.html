@@ -98,7 +98,13 @@
 
         button:hover {
             background-color: rgb(85, 144, 144);
+            cursor: pointer;
         }
+
+        button:disabled {
+        background-color: #d3d3d3; /* 禁用時改為灰色背景 */
+        color: #a3a3a3;             /* 禁用時文字顏色變為灰色 */
+        cursor: not-allowed;
 
         /* 按鈕群組排版 */
         .button-group {
