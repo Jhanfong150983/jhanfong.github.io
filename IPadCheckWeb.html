@@ -85,7 +85,7 @@
             display: none;
         }
 
-        /* 按鈕樣式 */
+        /* 正常按鈕樣式 */
         button {
             background-color: rgb(231, 142, 142);
             color: white;
@@ -100,13 +100,19 @@
             background-color: rgb(85, 144, 144);
             cursor: pointer;
         }
-
+        
+        /* 禁用按鈕樣式 */
         button:disabled {
         background-color: #d3d3d3; /* 禁用時改為灰色背景 */
         color: #a3a3a3;             /* 禁用時文字顏色變為灰色 */
         cursor: not-allowed;
         }
 
+        /* 禁用時不顯示懸停效果 */
+        button:disabled:hover {
+         background-color: #d3d3d3;  /* 禁用時保持灰色背景 */
+        }
+        
         /* 按鈕群組排版 */
         .button-group {
             display: flex;
