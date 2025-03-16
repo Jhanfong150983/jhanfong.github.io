@@ -5,79 +5,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關埔國小平板借用與歸還紀錄系統</title>
     <style>
-         h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+        /* 根據iPad尺寸進行適配 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(242, 204, 204);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    h2 {
-      font-size: 2rem;
-      font-weight: normal;
-      color: #34495e;
-      margin-bottom: 18px;
-      text-transform: capitalize;
-    }
+        /* 背景區域的設定 */
+        .container {
+            background-color: rgb(255, 255, 255);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* 使區域適應iPad螢幕 */
+        }
 
-    h3 {
-      font-size: 1.5rem;
-      font-weight: lighter;
-      color: #7f8c8d;
-      margin-bottom: 16px;
-      font-style: italic;
-    }
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        label { display: block; margin-top: 10px; }
-        input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
-        .hidden { display: none; }
-        .locked { background-color: #e0e0e0; pointer-events: none; }
-        .tablet-id-container { display: flex; align-items: center; gap: 5px; }
-        .tablet-id-container input { width: 45%; }
-        .tablet-id-separator { font-size: 18px; font-weight: bold; }
-        .button-group { display: flex; gap: 10px; margin-top: 10px; }
-        .button-group button { flex: 1; }
-        
+        /* 標題樣式 */
+        h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: rgb(85, 144, 144);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            color: rgb(85, 144, 144);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 輸入框和標籤的排版 */
+        label {
+            font-size: 1rem;
+            color: rgb(151, 149, 149);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid rgb(128, 183, 183);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus, button:focus {
+            outline: none;
+            border-color: rgb(85, 144, 144);
+        }
+
+        /* 隱藏自訂輸入框 */
+        .hidden {
+            display: none;
+        }
+
+        /* 按鈕樣式 */
+        button {
+            background-color: rgb(231, 142, 142);
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: rgb(85, 144, 144);
+        }
+
+        /* 按鈕群組排版 */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        /* 平板編號的特殊處理 */
+        .tablet-id-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tablet-id-container input {
+            width: 45%;
+        }
+
+        .tablet-id-separator {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* 設置返回按鈕禁用狀態 */
+        button:disabled {
+            background-color: rgb(128, 183, 183);
+            cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body>
-    <h2>關埔國小平板借用與歸還紀錄系統</h2>
-    <h3>使用前檢查與紀錄</h3>
-  
-    <label for="class">班級：</label>
-    <input type="text" id="class" placeholder="例如：305">
-    
-    <label for="seat">座號：</label>
-    <input type="number" id="seat" placeholder="例如：12">
-    
-    <label for="tabletIdPrefix">平板編號：</label>
-    <div class="tablet-id-container">
-        <input type="text" id="tabletIdPrefix" placeholder="例如：G">
-        <span class="tablet-id-separator">-</span>
-        <input type="text" id="tabletIdNumber" placeholder="例如：18">
+    <div class="container">
+        <h2>關埔國小平板借用與歸還紀錄系統</h2>
+        <h3>使用前檢查與紀錄</h3>
+
+        <label for="class">班級：</label>
+        <input type="text" id="class" placeholder="例如：305">
+
+        <label for="seat">座號：</label>
+        <input type="number" id="seat" placeholder="例如：12">
+
+        <label for="tabletIdPrefix">平板編號：</label>
+        <div class="tablet-id-container">
+            <input type="text" id="tabletIdPrefix" placeholder="例如：G">
+            <span class="tablet-id-separator">-</span>
+            <input type="text" id="tabletIdNumber" placeholder="例如：18">
+        </div>
+
+        <label for="beforestatus">使用前狀況：</label>
+        <select id="beforestatus">
+            <option value="正常">正常，沒有任何問題</option>
+            <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
+            <option value="面板破裂">平板有破裂，可能會割傷手指</option>
+            <option value="無法使用">平板完全無法使用</option>
+            <option value="其他1">其他（請自行填寫狀況）</option>
+        </select>
+
+        <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
+
+        <button onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
+
+        <h3>歸還檢查</h3>
+        <div class="button-group">
+            <button id="returnNoIssue" onclick="submitReturn('沒有問題')">沒有問題</button>
+            <button id="returnIssue" onclick="reportIssue()">有問題</button>
+        </div>
     </div>
-    
-    <label for="beforestatus">使用前狀況：</label>
-    <select id="beforestatus">
-        <option value="正常">正常，沒有任何問題</option>
-        <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
-        <option value="面板破裂">平板有破裂，可能會割傷手指</option>
-        <option value="無法使用">平板完全無法使用</option>
-        <option value="其他1">其他（請自行填寫狀況）</option>
-    </select>
-    
-    <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
-    
-    <button onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
-    
-    <h3>歸還檢查</h3>
-    <div class="button-group">
-        <button id="returnNoIssue" onclick="submitReturn('沒有問題')">沒有問題</button>
-        <button id="returnIssue" onclick="reportIssue()">有問題</button>
-    </div>
-    
+
     <script>
         document.getElementById("beforestatus").addEventListener("change", function() {
             let customStatus = document.getElementById("customStatus1");
@@ -88,7 +169,7 @@
                 customStatus.value = "";
             }
         });
-        
+
         function lockAndSubmit() {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
@@ -96,39 +177,39 @@
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
             let status = document.getElementById("beforestatus").value.trim();
             let customStatus = document.getElementById("customStatus1").value.trim();
-            
+
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-            
+
             if (status === "其他1") {
                 status = customStatus;
             }
-            
+
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !status) {
                 alert("請填寫所有必填欄位！");
                 return;
             }
-            
+
             document.getElementById("class").classList.add("locked");
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
-            
+
             document.getElementById("returnNoIssue").disabled = false;
             document.getElementById("returnIssue").disabled = false;
-            
+
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
             url.searchParams.append('status', status);
-            
+
             fetch(url)
                 .then(response => response.json())
                 .then(data => alert("借用紀錄已提交成功！"))
                 .catch(error => alert("提交失敗！"));
         }
-        
+
         function reportIssue() {
             if (document.getElementById("class").classList.contains("locked")) {
                 let damage = prompt("請描述新增的問題：");
@@ -137,27 +218,27 @@
                 alert("請先完成使用前紀錄！");
             }
         }
-        
+
         function submitReturn(status) {
             if (!document.getElementById("class").classList.contains("locked")) {
                 alert("請先完成使用前紀錄！");
                 return;
             }
-            
+
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
             let beforeStatus = document.getElementById("beforestatus").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-            
+
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
             url.searchParams.append('beforeStatus', beforeStatus);
             url.searchParams.append('returnStatus', status);
-            
+
             fetch(url)
                 .then(response => response.json())
                 .then(data => alert("歸還紀錄已提交成功！"))
