@@ -403,13 +403,13 @@
             alert("請描述問題！");
             return;
             }
-            submitData(issue);  // 傳送問題描述
+            submitData2(issue);  // 傳送問題描述
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
             });
 
             // 按下"沒問題"按鈕
             document.getElementById("noProblemBtn").addEventListener("click", function() {
-            submitData("沒有問題");  // 直接傳送"沒有問題"
+            submitData2("沒有問題");  // 直接傳送"沒有問題"
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
             });
         }
