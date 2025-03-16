@@ -16,7 +16,7 @@
             margin: 0;
         }
 
-        /* 背景區域的設定 */
+        /* 自定義背景區域的設定 */
         .container {
             background-color: rgb(255, 255, 255);
             padding: 30px;
@@ -200,7 +200,7 @@
 
         <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
 
-        <button onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
+        <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
 
         <h3>歸還檢查</h3>
         <h4>請將平板歸還給授課教師或資訊長進行檢查</h4>
@@ -253,8 +253,9 @@
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
 
+            document.getElementById("beforereport").disabled = false; // 顯示檢查回報按鈕
             document.getElementById("report").style.display = 'block'; // 顯示檢查回報按鈕
-
+            
             submitData1("沒有問題");
         }
 
