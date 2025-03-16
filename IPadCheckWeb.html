@@ -180,6 +180,52 @@
         .dialog button:hover {
         background-color: #4a8c4a;
         }
+
+        /* Loading dialog styles */
+        .loading-dialog {
+        display: none; /* 默認隱藏 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* 背景半透明 */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        }
+
+        /* Loading content */
+        .loading-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 200px;
+        }
+
+        /* Spinner animation */
+        .spinner {
+        border: 8px solid #f3f3f3; /* 淺灰色 */
+        border-top: 8px solid #3498db; /* 藍色 */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        }
+
+        /* Keyframes for spinner animation */
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
+        /* 文字顏色和樣式 */
+        .loading-content p {
+        font-size: 1rem;
+        color: rgb(85, 144, 144);
+        }
+        
     </style>
 </head>
 
@@ -245,6 +291,14 @@
         <button id="noProblemBtn">沒問題</button>
     </div>
     </div>
+
+    <!-- Loading Dialog -->
+    <div id="loadingDialog" class="loading-dialog">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>正在處理資料，請稍候...</p>
+        </div>
+    </div>
     
     <script>
         document.getElementById("beforestatus").addEventListener("change", function() {
@@ -275,6 +329,18 @@
                 alert("請填寫所有必填欄位！");
                 return;
             }
+
+            // 禁用表單和顯示 loading 視窗
+            disableForm(true);
+            showLoadingDialog();
+            // 模擬資料上傳過程，並在完成後重新啟用表單
+            setTimeout(function() {
+            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
+            submitData1("沒有問題");
+            // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
+            hideLoadingDialog();
+            disableForm(false);
+            }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
             
             document.getElementById("class").classList.add("locked");
             document.getElementById("seat").classList.add("locked");
@@ -284,10 +350,23 @@
 
             document.getElementById("beforereport").disabled = true; // 顯示檢查回報按鈕
             document.getElementById("report").disabled = false; // 顯示檢查回報按鈕
-            
-            submitData1("沒有問題");
         }
 
+        function showLoadingDialog() {
+            document.getElementById("loadingDialog").style.display = "flex";
+        }
+
+        function hideLoadingDialog() {
+            document.getElementById("loadingDialog").style.display = "none";
+        }    
+
+        function disableForm(disable) {
+        // 禁用或啟用所有表單項目
+        const formElements = document.querySelectorAll("input, select, button");
+        formElements.forEach(function(element) {
+        element.disabled = disable;
+        });
+        }
         
         function submitreport(status) {
             if (!document.getElementById("class").classList.contains("locked")) {
