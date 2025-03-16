@@ -43,11 +43,18 @@
             margin-bottom: 20px;
         }
 
+        h4 {
+            font-size: 1.0rem;
+            font-weight: normal;
+            color: rgb(255, 0, 0);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         /* 輸入框和標籤的排版 */
         label {
             font-size: 1rem;
             color: rgb(151, 149, 149);
-            margin-bottom: 5px;
             display: block;
         }
 
@@ -153,6 +160,7 @@
         <button onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
 
         <h3>歸還檢查</h3>
+        <h4>請將平板歸還給授課教師或資訊長進行檢查</h4>
         <div class="button-group">
             <button id="returnNoIssue" onclick="submitReturn('沒有問題')">沒有問題</button>
             <button id="returnIssue" onclick="reportIssue()">有問題</button>
