@@ -362,11 +362,12 @@
 
         function disableForm(disable) {
         // 禁用或啟用所有表單項目
-        const formElements = document.querySelectorAll("input, select, button");
-        formElements.forEach(function(element) {
-        if (element.id !== "beforereport") {
-            element.disabled = disable;
-        });
+            const formElements = document.querySelectorAll("input, select, button");
+            formElements.forEach(function(element) {
+                if (element.id !== "beforereport") {
+                    element.disabled = disable;
+                 }
+            });
         }
         
         function submitreport(status) {
