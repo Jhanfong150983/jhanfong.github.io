@@ -364,7 +364,8 @@
         // 禁用或啟用所有表單項目
         const formElements = document.querySelectorAll("input, select, button");
         formElements.forEach(function(element) {
-        element.disabled = disable;
+        if (element.id !== "beforereport") {
+            element.disabled = disable;
         });
         }
         
