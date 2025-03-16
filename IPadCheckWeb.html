@@ -246,11 +246,7 @@
                 alert("請填寫所有必填欄位！");
                 return;
             }
-
-            let submitButton = document.querySelector('button[onclick="lockAndSubmit()"]');
-            submitButton.disabled = true; // 禁用按鈕
-            submitButton.style.display = 'none'; // 隱藏按鈕
-
+            
             document.getElementById("class").classList.add("locked");
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
@@ -259,17 +255,10 @@
 
             document.getElementById("report").style.display = 'block'; // 顯示檢查回報按鈕
 
-            let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
-            url.searchParams.append('className', className);
-            url.searchParams.append('seat', seat);
-            url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('status', status);
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => alert("使用前紀錄已提交成功！"))
-                .catch(error => alert("提交失敗！"));
+            submitData1("沒有問題");
         }
+
+        
         function submitreport(status) {
             if (!document.getElementById("class").classList.contains("locked")) {
                 alert("請先完成使用前紀錄！");
@@ -297,7 +286,28 @@
             });
         }
 
-        function submitData(status) {
+        function submitData1(status) {
+            let className = document.getElementById("class").value.trim();
+            let seat = document.getElementById("seat").value.trim();
+            let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
+            let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
+            let beforeStatus = document.getElementById("beforestatus").value.trim();
+            let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
+
+            let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
+            url.searchParams.append('className', className);
+            url.searchParams.append('seat', seat);
+            url.searchParams.append('tabletId', tabletId);
+            url.searchParams.append('beforeStatus', beforeStatus);
+            url.searchParams.append('returnStatus', status);
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data =>alert("歸還紀錄已提交成功！"))
+                .catch(error => alert("提交失敗！"));
+        }
+
+         function submitData2(status) {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
