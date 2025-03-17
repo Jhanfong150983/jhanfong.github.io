@@ -446,6 +446,8 @@
             url.searchParams.append('tabletId', tabletId);
             url.searchParams.append('beforestatus', beforestatus);
 
+            console.log("提交的 URL:", url.toString());
+
             fetch(url)
                 .then(response => response.json())
                 .then(data =>alert("歸還紀錄已提交成功！"))
