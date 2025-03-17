@@ -340,6 +340,7 @@
             }
 
             console.log("最終 beforestatus:", beforestatus); 
+            console.log("使用者輸入 customStatus:", customStatus);
 
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
@@ -445,7 +446,8 @@
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
             url.searchParams.append('beforestatus', beforestatus);
-
+            
+            console.log("最終 beforestatus:", beforestatus);
             console.log("提交的 URL:", url.toString());
 
             fetch(url)
