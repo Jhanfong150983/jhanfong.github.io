@@ -400,32 +400,37 @@
             // 按下"有問題"按鈕
             document.getElementById("problemBtn").addEventListener("click", function() {
             let issue = prompt("請描述問題：");
-            if (!issue) {
-            alert("請描述問題！");
-            return;
+            while (!issue) {
+                alert("請描述問題！");
+                issue = prompt("請描述問題：");
             }
-            submitData2(issue);  // 傳送問題描述
+            // 顯示 loading 視窗
+            showLoadingDialog();
+
+            // 傳送問題描述
+            submitData2(issue);  
+            / 模擬延遲處理過程，這裡可以改成實際的處理邏輯
+            setTimeout(function() {
+            hideLoadingDialog();
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
+            }, 2000);  // 假設處理需要2秒，這裡可以調整為實際需要的時間
             });
 
             // 按下"沒問題"按鈕
             document.getElementById("noProblemBtn").addEventListener("click", function() {
-            submitData2("沒有問題");  // 直接傳送"沒有問題"
+             // 禁用表單和顯示 loading 視窗
+            disableForm(true);
+            showLoadingDialog();
+            // 模擬資料上傳過程，並在完成後重新啟用表單
+            setTimeout(function() {
+            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
+            submitData2("沒有問題");
+            // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
+            hideLoadingDialog();
+            disableForm(false);
+            }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
             });
-
-            // 禁用表單和顯示 loading 視窗
-                disableForm(true);
-                showLoadingDialog();
-            // 模擬資料上傳過程，並在完成後重新啟用表單
-                setTimeout(function() {
-            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
-                submitData2("沒有問題");
-            // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
-                hideLoadingDialog();
-                disableForm(false);
-                }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
-            
         }
 
         function submitData1(status) {
