@@ -407,15 +407,11 @@
             
             // 上傳資料的函式
             function uploadData(returnstatus) {
-            // 禁用表單並顯示 loading 視窗
-                disableForm(true);
-                showLoadingDialog();
             
-                setTimeout(function() {
-                    // 上傳資料
-                    submitData2(returnstatus);
-                    // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
-            }
+            // 上傳資料
+            submitData2(returnstatus);
+            
+         }
         }
 
         function submitData1(status) {
