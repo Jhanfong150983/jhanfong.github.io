@@ -73,7 +73,8 @@
             outline: none;
             border-color: rgb(85, 144, 144);
         }
-        
+
+        /* 鎖定設定 */
         .locked {
         background-color: #e0e0e0; /* 灰色背景 */
         pointer-events: none;  /* 禁用鼠标事件 */
@@ -171,7 +172,6 @@
             align-items: center;
         }
 
-        /* 标题样式 */
         .dialog-content h3 {
             margin-bottom: 20px; /* 给标题和按钮之间加点间距 */
         }
@@ -187,18 +187,16 @@
             border-radius: 5px;
         }
         
-        /* 如果想让按钮水平排列 */
         .dialog-content button {
             width: 150px; /* 按钮宽度 */
         }
-        
-        /* 按鈕按下時的樣式 */
+
         .dialog button:active {
             background-color: #4B8A3B; /* 深綠色，表示按鈕被點擊 */
             transform: scale(0.95); /* 略微縮小按鈕，提供按下的效果 */
         }
 
-        /* Loading dialog styles */
+        /* 加載畫面框框設定 */
         .loading-dialog {
             display: none; /* 默認隱藏 */
             position: fixed;
@@ -212,7 +210,7 @@
             z-index: 1000;
           }
 
-        /* Loading content */
+        /* 加載畫面視窗設定 */
         .loading-content {
             background-color: white;
             padding: 20px;
@@ -221,7 +219,7 @@
             width: 200px;
         }
 
-        /* Spinner animation */
+        /* 加載畫面動畫 */
         .spinner {
             border: 8px solid #f3f3f3; /* 淺灰色 */
             border-top: 8px solid #3498db; /* 藍色 */
@@ -231,13 +229,12 @@
             animation: spin 2s linear infinite;
         }
 
-        /* Keyframes for spinner animation */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* 文字顏色和樣式 */
+        /* 加載畫面文字設定 */
         .loading-content p {
             font-size: 1rem;
             color: rgb(85, 144, 144);
@@ -406,14 +403,14 @@
             }
             // 顯示 loading 視窗
             showLoadingDialog();
-
-            // 傳送問題描述
-            submitData2(issue);  
-            / 模擬延遲處理過程，這裡可以改成實際的處理邏輯
+            //模擬延遲處理過程，這裡可以改成實際的處理邏輯
             setTimeout(function() {
+            // 傳送問題描述
+            submitData2(issue);
             hideLoadingDialog();
+            disableForm(false);
+            }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
-            }, 2000);  // 假設處理需要2秒，這裡可以調整為實際需要的時間
             });
 
             // 按下"沒問題"按鈕
