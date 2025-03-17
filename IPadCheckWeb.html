@@ -277,8 +277,8 @@
             <input type="text" id="tabletIdNumber" placeholder="例如：18">
         </div>
 
-        <label for="beforestatus">使用前狀況：</label>
-        <select id="beforestatus">
+        <label for="status">使用前狀況：</label>
+        <select id="status">
             <option value="正常">正常，沒有任何問題</option>
             <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
             <option value="面板破裂">平板有破裂，可能會割傷手指</option>
@@ -315,7 +315,7 @@
     </div>
     
     <script>
-        document.getElementById("beforestatus").addEventListener("change", function() {
+        document.getElementById("status").addEventListener("change", function() {
             let customStatus = document.getElementById("customStatus1");
             if (this.value === "其他1") {
                 customStatus.classList.remove("hidden");
@@ -330,7 +330,7 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let status = document.getElementById("beforestatus").value.trim();
+            let status = document.getElementById("status").value.trim();
             let customStatus = document.getElementById("customStatus1").value.trim();
 
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
@@ -360,7 +360,7 @@
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
             document.getElementById("tabletIdNumber").classList.add("locked");
-            document.getElementById("beforestatus").classList.add("locked");
+            document.getElementById("status").classList.add("locked");
             document.getElementById("customStatus1").classList.add("locked");
 
             document.getElementById("beforereport").disabled = true; // 禁用按鈕
@@ -435,14 +435,14 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let beforeStatus = document.getElementById("beforestatus").value.trim();
+            let status = document.getElementById("status").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('beforeStatus', beforeStatus);
+            url.searchParams.append('status', status);
 
             fetch(url)
                 .then(response => response.json())
