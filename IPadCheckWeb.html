@@ -443,7 +443,6 @@
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
             url.searchParams.append('beforeStatus', beforeStatus);
-            url.searchParams.append('returnStatus', status);
 
             fetch(url)
                 .then(response => response.json())
@@ -456,14 +455,12 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let beforeStatus = document.getElementById("beforestatus").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('beforeStatus', beforeStatus);
             url.searchParams.append('returnStatus', status);
 
             fetch(url)
