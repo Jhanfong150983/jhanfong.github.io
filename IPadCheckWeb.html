@@ -444,7 +444,7 @@
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('beforestatus', status);
+            url.searchParams.append('beforestatus', beforestatus);
             
             console.log("最終 beforestatus:", beforestatus);
             console.log("提交的 URL:", url.toString());
@@ -468,7 +468,7 @@
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('returnstatus', status);
+            url.searchParams.append('returnstatus', returnstatus);
 
             fetch(url)
                 .then(response => response.json())
