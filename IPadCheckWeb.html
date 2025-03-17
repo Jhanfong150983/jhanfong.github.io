@@ -333,14 +333,15 @@
             let beforestatus = document.getElementById("beforestatus").value.trim();
             let customStatus = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-
+            
+            console.log("beforestatus初始值:", beforestatus);
+            
             if (beforestatus === "其他" && customStatus !== "") {
                 beforestatus = customStatus;
                 document.getElementById("beforestatus").value = beforestatus;
             }
-
-            console.log("beforestatus值:", beforestatus); 
-            console.log("使用者輸入 customStatus:", customStatus);
+            
+            console.log("覆蓋後的 beforestatus:", beforestatus);
 
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
@@ -353,7 +354,7 @@
             // 模擬資料上傳過程，並在完成後重新啟用表單
             setTimeout(function() {
             // 模擬上傳成功後，這裡可以放實際的上傳程式碼
-            submitData1("沒有問題");
+            submitData1(beforestatus);
             // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
             hideLoadingDialog();
             disableForm(false);
@@ -435,8 +436,6 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let beforestatus = document.getElementById("beforestatus").value.trim();
-            let customStatus = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
             
             console.log("上傳前beforestatus值:", beforestatus);
@@ -446,10 +445,7 @@
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('beforestatus', beforestatus);
-            
-            console.log("最終 beforestatus:", beforestatus);
-            console.log("提交的 URL:", url.toString());
+            url.searchParams.append('beforestatus', status);
 
             fetch(url)
                 .then(response => response.json())
