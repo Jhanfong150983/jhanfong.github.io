@@ -439,6 +439,7 @@
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbxGCUePWLwzRwZfeBZyT1yiSp5k3UvYz0K74x46LCrup4PzujFlJiEFcAs81tiE3mo5-w/exec');
+            url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
@@ -462,6 +463,7 @@
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbxGCUePWLwzRwZfeBZyT1yiSp5k3UvYz0K74x46LCrup4PzujFlJiEFcAs81tiE3mo5-w/exec');
+            url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
