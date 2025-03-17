@@ -458,8 +458,9 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let returnstatus = document.getElementById("returnstatus").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
+
+            let returnstatus = status;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbxGCUePWLwzRwZfeBZyT1yiSp5k3UvYz0K74x46LCrup4PzujFlJiEFcAs81tiE3mo5-w/exec');
             url.searchParams.append('action', 'return');
