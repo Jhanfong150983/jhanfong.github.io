@@ -335,8 +335,8 @@
 
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
-            if (beforestatus === "其他1") {
-                beforestatus = customStatus;
+            if (beforestatus === "其他1" && customStatus !== "") {
+                beforestatus = customStatus; 
             }
 
             console.log("最終 beforestatus:", beforestatus); 
