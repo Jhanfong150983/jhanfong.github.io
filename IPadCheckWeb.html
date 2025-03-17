@@ -390,8 +390,7 @@
 
             // 按下"有問題"按鈕
             document.getElementById("problemBtn").addEventListener("click", function() {
-            let issue = prompt("請描述問題：");
-            let returnstatus = "";
+            let returnstatus = prompt("請描述問題：");
             if (!returnstatus) {
                 alert("請描述問題！");
                 returnstatus = prompt("請描述問題：");
