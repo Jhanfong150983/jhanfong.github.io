@@ -348,11 +348,6 @@
                 return;
             }
 
-            // 禁用表單和顯示 loading 視窗
-            disableForm(true);
-            showLoadingDialog();
-            // 模擬資料上傳過程，並在完成後重新啟用表單
-            setTimeout(function() {
             // 模擬上傳成功後，這裡可以放實際的上傳程式碼
             submitData1(beforestatus);
             
@@ -439,7 +434,12 @@
             url.searchParams.append('tabletId', tabletId);
             url.searchParams.append('beforestatus', status);
 
-            fetch(url){
+            fetch(url)
+            // 禁用表單和顯示 loading 視窗
+            disableForm(true);
+            showLoadingDialog();
+            // 模擬資料上傳過程，並在完成後重新啟用表單
+            setTimeout(function() {
             hideLoadingDialog();
             disableForm(false);
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
@@ -465,7 +465,12 @@
 
             console.log("提交的 URL:", url.toString());
              
-            fetch(url){
+            fetch(url)
+            // 禁用表單和顯示 loading 視窗
+            disableForm(true);
+            showLoadingDialog();
+            // 模擬資料上傳過程，並在完成後重新啟用表單
+            setTimeout(function() {
             hideLoadingDialog();
             disableForm(false);
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
