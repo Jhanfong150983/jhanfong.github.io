@@ -338,7 +338,7 @@
                 beforestatus = customStatus; 
             }
 
-            console.log("最終 beforestatus:", beforestatus); 
+            console.log("beforestatus值:", beforestatus); 
             console.log("使用者輸入 customStatus:", customStatus);
 
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
@@ -430,6 +430,16 @@
         }
 
         function submitData1(status) {
+            let className = document.getElementById("class").value.trim();
+            let seat = document.getElementById("seat").value.trim();
+            let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
+            let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
+            let beforestatus = document.getElementById("beforestatus").value.trim();
+            let customStatus = document.getElementById("customStatus1").value.trim();
+            let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
+            
+            console.log("上傳前beforestatus值:", beforestatus);
+            
             let url = new URL('https://script.google.com/macros/s/AKfycbxGCUePWLwzRwZfeBZyT1yiSp5k3UvYz0K74x46LCrup4PzujFlJiEFcAs81tiE3mo5-w/exec');
             url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
