@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關埔國小平板借用與歸還紀錄系統</title>
     <style>
-        /* 根據iPad尺寸進行適配 */
+        /* 整個網頁大小根據iPad尺寸進行適配 */
         body {
             font-family: Arial, sans-serif;
             background-color: rgb(242, 204, 204);
@@ -400,38 +400,34 @@
             // 按下"有問題"按鈕
             document.getElementById("problemBtn").addEventListener("click", function() {
             let issue = prompt("請描述問題：");
-            while (!issue) {
+            while (!returnstatus) {
                 alert("請描述問題！");
-                issue = prompt("請描述問題：");
-            }
-            // 顯示 loading 視窗
-            showLoadingDialog();
-            //模擬延遲處理過程，這裡可以改成實際的處理邏輯
-            setTimeout(function() {
-            // 傳送問題描述
-            submitData2(issue);
-            hideLoadingDialog();
-            disableForm(false);
-            }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
-            document.getElementById("customDialog").style.display = "none";  // 關閉對話框
+                returnstatus = prompt("請描述問題：");
+                }
+                uploadData(returnstatus);
             });
 
             // 按下"沒問題"按鈕
             document.getElementById("noProblemBtn").addEventListener("click", function() {
-             // 禁用表單和顯示 loading 視窗
-            disableForm(true);
-            showLoadingDialog();
-            // 模擬資料上傳過程，並在完成後重新啟用表單
-            setTimeout(function() {
-            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
-            submitData2("沒有問題");
-            // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
-            hideLoadingDialog();
-            disableForm(false);
-            }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
-            document.getElementById("customDialog").style.display = "none";  // 關閉對話框
+                let returnstatus = "沒有問題";
+                uploadData(returnstatus);
             });
-        }
+            
+            // 上傳資料的函式
+            function uploadData(returnstatus) {
+            // 禁用表單並顯示 loading 視窗
+                disableForm(true);
+                showLoadingDialog();
+            
+                setTimeout(function() {
+                    // 上傳資料
+                    submitData2(returnstatus);
+                    // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
+                    hideLoadingDialog();
+                    disableForm(false);
+                    document.getElementById("customDialog").style.display = "none";  // 關閉對話框
+                }, 3000);  // 假設上傳需要3秒
+            }
 
         function submitData1(status) {
             let className = document.getElementById("class").value.trim();
@@ -445,7 +441,7 @@
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('beforestatus', beforestatus);
+            url.searchParams.append('beforestatus', status);
             
             console.log("最終 beforestatus:", beforestatus);
             console.log("提交的 URL:", url.toString());
@@ -461,13 +457,14 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
+            let returnstatus = document.getElementById("returnstatus").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbwCji9zGYC7NXf2Y_WyMnWPlrYdeQ31rc2JZNJSYfRwpiKQ4ArZDxTJnTgnv9JEQsLnXw/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('returnStatus', status);
+            url.searchParams.append('returnstatus', status);
 
             fetch(url)
                 .then(response => response.json())
