@@ -364,6 +364,7 @@
             document.getElementById("tabletIdPrefix").classList.add("locked");
             document.getElementById("tabletIdNumber").classList.add("locked");
             document.getElementById("beforestatus").classList.add("locked");
+            document.getElementById("customStatus1").classList.add("locked");
 
             document.getElementById("beforereport").disabled = true; // 禁用按鈕
             document.getElementById("report").disabled = false; // 啟用檢查回報按鈕
@@ -412,6 +413,19 @@
             submitData2("沒有問題");  // 直接傳送"沒有問題"
             document.getElementById("customDialog").style.display = "none";  // 關閉對話框
             });
+
+            // 禁用表單和顯示 loading 視窗
+                disableForm(true);
+                showLoadingDialog();
+            // 模擬資料上傳過程，並在完成後重新啟用表單
+                setTimeout(function() {
+            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
+                submitData2("沒有問題");
+            // 資料上傳完成後，隱藏 loading 視窗並重新啟用表單
+                hideLoadingDialog();
+                disableForm(false);
+                }, 3000);  // 假設上傳需要3秒，這裡可以調整為實際需要的時間
+            
         }
 
         function submitData1(status) {
