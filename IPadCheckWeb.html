@@ -277,8 +277,8 @@
             <input type="text" id="tabletIdNumber" placeholder="例如：18">
         </div>
 
-        <label for="brforestatus">使用前狀況：</label>
-        <select id="brforestatus">
+        <label for="beforestatus">使用前狀況：</label>
+        <select id="beforestatus">
             <option value="正常">正常，沒有任何問題</option>
             <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
             <option value="面板破裂">平板有破裂，可能會割傷手指</option>
@@ -315,7 +315,7 @@
     </div>
     
     <script>
-        document.getElementById("brforestatus").addEventListener("change", function() {
+        document.getElementById("beforestatus").addEventListener("change", function() {
             let customStatus = document.getElementById("customStatus1");
             if (this.value === "其他1") {
                 customStatus.classList.remove("hidden");
@@ -330,16 +330,16 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let brforestatus = document.getElementById("brforestatus").value.trim();
+            let beforestatus = document.getElementById("beforestatus").value.trim();
             let customStatus = document.getElementById("customStatus1").value.trim();
 
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
-            if (brforestatus === "其他1") {
-                brforestatus = customStatus1;
+            if (beforestatus === "其他1") {
+                beforestatus = customStatus1;
             }
 
-            if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !brforestatus) {
+            if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
                 return;
             }
@@ -360,7 +360,7 @@
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
             document.getElementById("tabletIdNumber").classList.add("locked");
-            document.getElementById("brforestatus").classList.add("locked");
+            document.getElementById("beforestatus").classList.add("locked");
             document.getElementById("customStatus1").classList.add("locked");
 
             document.getElementById("beforereport").disabled = true; // 禁用按鈕
@@ -435,14 +435,14 @@
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let brforestatus = document.getElementById("brforestatus").value.trim();
+            let beforestatus = document.getElementById("beforestatus").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
-            let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzykkyuAlS80JhkEb5G3Xazhz8ylUA3RfZt5rR6Ydycj-yNmXV1myPNhYy6EUVc8exLlw/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('brforestatus', brforestatus);
+            url.searchParams.append('beforestatus', beforestatus);
 
             fetch(url)
                 .then(response => response.json())
@@ -457,7 +457,7 @@
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
-            let url = new URL('https://script.google.com/macros/s/AKfycbzZiSysFMeFLYXDGODguoA2iTu-szdWmspS5QCaNDfdsznRchOgecDJwV_pPHB4QYvJyA/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzykkyuAlS80JhkEb5G3Xazhz8ylUA3RfZt5rR6Ydycj-yNmXV1myPNhYy6EUVc8exLlw/exec');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
