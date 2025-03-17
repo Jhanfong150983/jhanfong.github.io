@@ -335,7 +335,8 @@
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
             if (beforestatus === "其他" && customStatus !== "") {
-                beforestatus = customStatus; 
+                beforestatus = customStatus;
+                document.getElementById("beforestatus").value = beforestatus;
             }
 
             console.log("beforestatus值:", beforestatus); 
