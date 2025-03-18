@@ -453,10 +453,7 @@
                 document.getElementById("afterDialog").style.display = "none";
             })
             document.getElementById("noProblemBtn").addEventListener("click", function() {
-                function uploadData(returnstatus) {
-                // 上傳資料
-                    submitData2(returnstatus);
-                 }
+                submitData2(afterstatus);
             })
         }
 
@@ -504,9 +501,6 @@
                 document.getElementById("afterstatus").value = afterstatus;
             }
             
-
-            let returnstatus = status;
-
             let url = new URL('https://script.google.com/macros/s/AKfycbxcIZScaDXyuD0g-CksqIsxR7DwnoqWWdGI_5CrHIJXUCGE1rYXN-w9E2ZS6R17_RawIA/exec');
             url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
