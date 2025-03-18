@@ -266,14 +266,23 @@
         .arrow-icon {
             position: absolute;
             top: 10px; /* 根據新增分頁 ICON 的具體垂直位置進行調整 */
-            right: 10px; /* 將箭頭定位到右上角 */
+            right: 50px; /* 將箭頭定位到右上角 */
+            width: 0;
+            height: 0;
             font-size: 30px; /* 調整箭頭大小 */
-            transform: rotate(90deg); /* 旋轉箭頭使其指向右方 */
-            color: black; /* 設置箭頭顏色 */
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 20px solid red; /* 箭頭顏色 */
             animation: bounce 1s infinite; /* 增加動態效果讓使用者注意 */
         }
         
         .safari-indicator p {
+            position: absolute;
+            top: 40px;
+            right: 30px;
+            color: red;
+            font-size: 14px;
+            font-weight: bold;
             font-size: 30px; /* 設定文字的大小 */
             font-weight: bold; /* 如果想讓文字更醒目 */
         }
