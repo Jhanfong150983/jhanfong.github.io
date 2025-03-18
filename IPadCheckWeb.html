@@ -18,15 +18,16 @@
 
         /* 自定義背景區域的設定 */
         .container {
-            background-color: rgb(255, 255, 255);
-            padding: 20px;
+            background-color: white;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px; /* 使區域適應iPad螢幕 */
-            max-height: 90vh; /* 限制最大高度為視窗高度的90% */
-            overflow-y: auto; /* 當內容超過時顯示垂直滾動條 */
-            margin: 0 20px; /* 讓容器距離邊緣有適當間距 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            max-width: 90%;
+            height: 85vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         /* 標題樣式 */
@@ -91,15 +92,18 @@
 
         /* 正常按鈕樣式 */
         button {
-        background-color: rgb(231, 142, 142);
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-top: 10px;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.1s ease-in-out;
-        padding: 10px 20px;
-        border-radius: 8px;
+            background: linear-gradient(to right, #e78e8e, #c56d6d);
+            color: white;
+            padding: 0.8rem 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         
         /* 平板上的觸控反饋 */
