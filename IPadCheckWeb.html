@@ -261,16 +261,14 @@
 
         .safari-indicator {
             position: relative; /* 確保內部的箭頭以這裡為基準定位 */
-            display: flex;
-            flex-direction: column; /* 垂直排列箭頭和文字 */
-            align-items: center; /* 讓箭頭和文字水平居中 */
         }
 
         .arrow-icon {
-            position: absolute; /* 使用絕對定位 */
-            top: 50px; /* 根據需要調整箭頭的位置 */
-            left: 100px; /* 根據需要調整箭頭的水平位置 */
-            font-size: 30px; /* 設置箭頭大小 */
+            position: absolute;
+            top: 10px; /* 根據新增分頁 ICON 的具體垂直位置進行調整 */
+            right: 10px; /* 將箭頭定位到右上角 */
+            font-size: 30px; /* 調整箭頭大小 */
+            transform: rotate(90deg); /* 旋轉箭頭使其指向右方 */
             color: black; /* 設置箭頭顏色 */
             animation: bounce 1s infinite; /* 增加動態效果讓使用者注意 */
         }
