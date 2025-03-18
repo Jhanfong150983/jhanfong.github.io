@@ -509,6 +509,16 @@
                 alert("請先完成使用前紀錄！");
                 return;
             }
+
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                allChecked = false;
+                }
+            });
+
+            if (!allChecked) {
+                alert("請確保所有的選項都已勾選！");
+            }
             
             document.getElementById("afterDialog").style.display = "flex";
             document.getElementById("problemBtn").addEventListener("click", function() {
