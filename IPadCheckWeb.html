@@ -155,7 +155,6 @@
         }
 
 
-         /* 自定義對話視窗 */
         .dialog {
             display: none;
             justify-content: center;
@@ -167,10 +166,10 @@
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5); /* 透明背景 */
             z-index: 5555;
-        }
+         }
 
         .dialog-content {
-            background-color: white;
+             background-color: white;
             padding: 20px;
             border-radius: 8px;
             text-align: center; /* 让标题和按钮居中 */
@@ -183,8 +182,8 @@
         .dialog-content h3 {
             margin-bottom: 20px; /* 给标题和按钮之间加点间距 */
         }
-        
-        .dialog-content {
+
+        .dialog button {
             padding: 10px 20px;
             margin: 10px;
             border: none;
@@ -196,11 +195,11 @@
             white-space: nowrap;
         }
 
-        .dialog button:active {
-            background-color: #4B8A3B; /* 深綠色，表示按鈕被點擊 */
-            transform: scale(0.95); /* 略微縮小按鈕，提供按下的效果 */
-        }
-
+/* 按鈕被點擊時的效果 */
+.dialog button:active {
+    background-color: #4B8A3B; /* 深綠色，表示按鈕被點擊 */
+    transform: scale(0.95); /* 略微縮小按鈕，提供按下的效果 */
+}
         /* 加載畫面框框設定 */
         .loading-dialog {
             display: none; /* 默認隱藏 */
