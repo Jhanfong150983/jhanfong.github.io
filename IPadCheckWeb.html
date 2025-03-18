@@ -349,8 +349,8 @@
     <div id="afterDialog" class="dialog">
     <div class="dialog-content">
         <h3>是否確認已經確實檢查？</h3>
-        <button id="problemBtn">確實檢查完畢</button>
-        <button id="noProblemBtn">還沒我再看一下</button>
+        <button id="problemBtn">還沒我再看一下</button>
+        <button id="noProblemBtn">確實檢查完畢</button>
     </div>
     </div>
 
@@ -447,32 +447,17 @@
                 return;
             }
 
-            // 顯示自定義對話框
-            document.getElementById("customDialog").style.display = "flex";
-
-            // 按下"有問題"按鈕
+            // 使用後檢查彈跳視窗
+            document.getElementById("afterDialog").style.display = "flex";
             document.getElementById("problemBtn").addEventListener("click", function() {
-            let returnstatus = prompt("請描述問題：");
-            if (!returnstatus) {
-                alert("請描述問題！");
-                returnstatus = prompt("請描述問題：");
-                }
-                uploadData(returnstatus);
-            });
-
-            // 按下"沒問題"按鈕
-            document.getElementById("noProblemBtn").addEventListener("click", function() {
-                let returnstatus = "沒有問題";
-                uploadData(returnstatus);
-            });
-            
-            // 上傳資料的函式
-            function uploadData(returnstatus) {
-            
-            // 上傳資料
-            submitData2(returnstatus);
-            
-         }
+                document.getElementById("afterDialog").style.display = "none";
+            }
+            document.getElementById("noProblemBtn")addEventListener("click", function() {
+                function uploadData(returnstatus) {
+                // 上傳資料
+                    submitData2(returnstatus);
+                 }
+            }
         }
 
         function submitData1(status) {
