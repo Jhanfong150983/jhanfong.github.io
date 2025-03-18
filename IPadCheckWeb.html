@@ -512,7 +512,8 @@
 
             checkboxes.forEach(checkbox => {
                 if (!checkbox.checked) {
-                allChecked = false;
+                    allChecked = false;
+                    return;
                 }
             });
 
