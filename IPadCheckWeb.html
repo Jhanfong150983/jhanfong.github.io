@@ -296,7 +296,14 @@
             z-index: 1000;
             cursor: pointer;
         }
-
+        /* 注意標題 */
+        #notice {
+            color: red;
+            font-size: 3rem; /* 調整字體大小 */
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
         /* 警示文字樣式 */
         #alert-message {
             color: white;
@@ -306,13 +313,21 @@
             background-color: rgba(255, 255, 255, 0.1); /* 半透明背景 */
             border-radius: 10px;
         }
+        /* 點擊繼續文字 */
+        #continue-text {
+            color: white;
+            font-size: 1.2rem; /* 字體稍小於原樣式 */
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
     <div id="overlay">
         <div id="alert-message">
-            注意此網頁只有在借用與歸還平板檢查使用，請勿任意填寫。
+            <div id="notice">注意</div>
+            <div id="warning-text">此網頁只有在借用與歸還平板檢查使用，請勿任意填寫。</div>
+            <div id="continue-text">點擊任意位置以繼續。</div>
         </div>
     </div>
     <div class="container">
