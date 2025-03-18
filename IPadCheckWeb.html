@@ -389,8 +389,8 @@
             <h4>未確實檢查或登打者，將於下課時間到資訊組行愛校服務一周</h4>
 
             <div class="checklist">
-                <label><input type="checkbox" disabled> 已經將登入的帳號確實登出</label><br>
-                <label><input type="checkbox" disabled> 平板畫面正常，沒有做奇怪的設定</label><br>
+                <label><input type="checkbox" class="checkbox" disabled> 已經將登入的帳號確實登出</label><br>
+                <label><input type="checkbox" class="checkbox" disabled> 平板畫面正常，沒有做奇怪的設定</label><br>
             </div>
         
             <label for="afterstatus">平板使用後狀況：</label>
@@ -509,12 +509,18 @@
                 alert("請先完成使用前紀錄！");
                 return;
             }
+
+            console.log("所有 checkbox 勾選狀態:", Array.from(checkboxes).every(checkbox => checkbox.checked));
+            console.log("afterstatus 狀態:", afterstatus);
             
             const checkboxes = document.querySelectorAll(".checkbox");
             if (!Array.from(checkboxes).every(checkbox => checkbox.checked) || !afterstatus) {
                 alert("請確實檢查！");
                 return;
             }
+            console.log("所有 checkbox 勾選狀態:", Array.from(checkboxes).every(checkbox => checkbox.checked));
+            console.log("afterstatus 狀態:", afterstatus);
+
 
             
             document.getElementById("afterDialog").style.display = "flex";
