@@ -392,14 +392,10 @@
             let customStatus = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
             
-            console.log("beforestatus初始值:", beforestatus);
-            
             if (beforestatus === "其他" && customStatus !== "") {
                 beforestatus = customStatus;
                 document.getElementById("beforestatus").value = beforestatus;
             }
-            
-            console.log("覆蓋後的 beforestatus:", beforestatus);
 
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
@@ -417,6 +413,14 @@
             document.getElementById("customStatus1").classList.add("locked");
             document.getElementById("beforereport").disabled = true; // 禁用按鈕
             document.getElementById("report").disabled = false; // 啟用檢查回報按鈕
+
+            // 呼叫使用前檢查彈跳視窗
+            document.getElementById("beforeDialog").style.display = "flex";
+            
+            // 按下彈跳式視窗確認鍵
+            document.getElementById("beforeBtn").addEventListener("click", function() {
+            document.getElementById("beforeDialog").style.display = "none";
+            });
         }
 
         function showLoadingDialog() {
