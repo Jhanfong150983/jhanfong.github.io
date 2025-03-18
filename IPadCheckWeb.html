@@ -50,6 +50,14 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        
+        h5 {
+            font-size: 0.8rem;
+            font-weight: normal;
+            color: rgb(85, 144, 144);
+            text-align: left;
+            margin-bottom: 20px;
+        }
 
         /* 標籤 */
         label {
@@ -277,7 +285,7 @@
             <input type="text" id="tabletIdNumber" placeholder="例如：18">
         </div>
 
-        <label for="beforestatus">使用前狀況：</label>
+        <label for="beforestatus">平板使用前狀況：</label>
         <select id="beforestatus">
             <option value="正常">正常，沒有任何問題</option>
             <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
@@ -291,10 +299,22 @@
         <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
 
         <h3>歸還檢查</h3>
-        <h4>請將平板歸還給授課教師或資訊長進行檢查</h4>
+        <h4>請完成下列檢查，並按下確認</h4>
+        <label><input type="checkbox"> 已經將登入的帳號確實登出</label><br>
+        <label><input type="checkbox"> 平板畫面正常，沒有做奇怪的設定</label><br>
+        <label for="aferstatus">平板使用後狀況：</label>
+        <select id="aferstatus">
+            <option value="正常">正常，沒有任何問題</option>
+            <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
+            <option value="面板破裂">平板有破裂，可能會割傷手指</option>
+            <option value="無法使用">平板完全無法使用</option>
+            <option value="其他">其他（請自行填寫狀況）</option>
+        </select>
+        
+        <input type="text" id="customStatus2" class="hidden" placeholder="請描述其他狀況">
         
         <div class="button-group">
-            <button id="report" onclick="submitreport('檢查回報')" disabled>授課教師或資訊長檢查</button>
+            <button id="report" onclick="submitreport('檢查回報')" disabled>我已負起檢查責任，確實檢查</button>
         </div>
     </div>
 
