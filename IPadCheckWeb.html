@@ -258,7 +258,31 @@
             width: 20px;
             height: 20px;
         }
-        
+
+        .safari-indicator {
+            position: absolute;
+            top: 20px; /* 根據實際需求調整位置 */
+            right: 50px; /* 調整箭頭的橫向位置 */
+            text-align: center;
+            z-index: 1000; /* 確保箭頭在所有元素之上 */
+        }
+
+        .arrow-icon {
+            width: 50px; /* 圖標大小 */
+            height: auto;
+            animation: bounce 1s infinite; /* 增加動態效果讓使用者注意 */
+        }
+
+        /* 動畫效果 */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px); /* 往上移動的距離 */
+            }
+        }
+
     </style>
 </head>
 
@@ -339,10 +363,15 @@
     
     <!-- 使用前檢查彈跳視窗 -->
     <div id="beforeDialog" class="dialog">
-    <div class="dialog-content">
-        <h3>請縮小網頁視窗，並專心上課</h3>
-        <button id="beforeBtn">上完課了，我要歸還檢查</button>
-    </div>
+        <div class="dialog-content">
+            <h3>請不要關閉這個視窗你可以開啟一個新的分頁，並專心上課</h3>
+            <button id="beforeBtn">上完課了，我要歸還檢查</button>
+        </div>
+        
+        <div class="safari-indicator">
+            <img src="arrow.png" alt="箭頭" class="arrow-icon">
+            <p>點擊Safari新增分頁</p>
+        </div>
     </div>
 
     <!-- 使用後檢查彈跳視窗 -->
