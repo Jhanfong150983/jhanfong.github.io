@@ -509,7 +509,8 @@
                 alert("請先完成使用前紀錄！");
                 return;
             }
-
+            
+            const checkboxes = document.querySelectorAll(".checkbox");
             if (!Array.from(checkboxes).every(checkbox => checkbox.checked) || !afterestatus) {
                 alert("請確實檢查！");
                 return;
