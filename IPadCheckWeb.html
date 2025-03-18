@@ -307,7 +307,7 @@
             <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
             <option value="面板破裂">平板有破裂，可能會割傷手指</option>
             <option value="無法使用">平板完全無法使用</option>
-            <option value="其他">其他（請自行填寫狀況）</option>
+            <option value="其他1">其他（請自行填寫狀況）</option>
         </select>
 
         <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
@@ -315,7 +315,7 @@
         <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
 
         <h3>歸還檢查</h3>
-        <h4>未確實檢查或登打者，將於下課時間置資訊組行愛校服務一周</h4>
+        <h4>未確實檢查或登打者，將於下課時間到資訊組行愛校服務一周</h4>
 
         <div class="checklist">
             <label><input type="checkbox" disabled> 已經將登入的帳號確實登出</label><br>
@@ -328,7 +328,7 @@
             <option value="些微裂痕">平板有些微裂痕，但可以正常使用</option>
             <option value="面板破裂">平板有破裂，可能會割傷手指</option>
             <option value="無法使用">平板完全無法使用</option>
-            <option value="其他">其他（請自行填寫狀況）</option>
+            <option value="其他2">其他（請自行填寫狀況）</option>
         </select>
         
         <input type="text" id="customStatus2" class="hidden" placeholder="請描述其他狀況">
@@ -364,14 +364,24 @@
     
     <script>
         document.getElementById("beforestatus").addEventListener("change", function() {
-            let customStatus = document.getElementById("customStatus1");
-            if (this.value === "其他") {
-                customStatus.classList.remove("hidden");
-            } else {
-                customStatus.classList.add("hidden");
-                customStatus.value = "";
+        let customStatus = document.getElementById("customStatus1");
+        if (this.value === "其他1") {
+            customStatus.classList.remove("hidden");
+        } else {
+            customStatus.classList.add("hidden");
+            customStatus.value = "";
             }
         });
+
+        document.getElementById("aferstatus").addEventListener("change", function() {
+        let customStatus = document.getElementById("customStatus2");
+        if (this.value === "其他2") {
+             customStatus.classList.remove("hidden");
+        } else {
+            customStatus.classList.add("hidden");
+             customStatus.value = "";
+            }
+         });
 
         function lockAndSubmit() {
             let className = document.getElementById("class").value.trim();
