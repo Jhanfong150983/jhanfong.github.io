@@ -414,7 +414,7 @@
         </div>
         
         <div class="safari-indicator">
-            <img src="arrow.png" alt="箭頭" class="arrow-icon">
+            <div class="arrow-icon">&#9658;</div>
             <p>點擊Safari新增分頁</p>
         </div>
     </div>
@@ -510,9 +510,6 @@
                 return;
             }
 
-            console.log("所有 checkbox 勾選狀態:", Array.from(checkboxes).every(checkbox => checkbox.checked));
-            console.log("afterstatus 狀態:", afterstatus);
-            
             const checkboxes = document.querySelectorAll(".checkbox");
             if (!Array.from(checkboxes).every(checkbox => checkbox.checked) || !afterstatus) {
                 alert("請確實檢查！");
