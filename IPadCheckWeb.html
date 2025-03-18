@@ -392,7 +392,7 @@
             let customStatus = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
             
-            if (beforestatus === "其他" && customStatus !== "") {
+            if (beforestatus === "其他1" && customStatus1 !== "") {
                 beforestatus = customStatus;
                 document.getElementById("beforestatus").value = beforestatus;
             }
@@ -466,8 +466,11 @@
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-            
-            console.log("上傳前beforestatus值:", beforestatus);
+
+            if (beforestatus === "其他1" && customStatus1 !== "") {
+                beforestatus = customStatus1;
+                document.getElementById("beforestatus").value = beforestatus;
+            }
             
             let url = new URL('https://script.google.com/macros/s/AKfycbxcIZScaDXyuD0g-CksqIsxR7DwnoqWWdGI_5CrHIJXUCGE1rYXN-w9E2ZS6R17_RawIA/exec');
             url.searchParams.append('action', 'before');
@@ -496,6 +499,12 @@
             let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
+            if (afterstatus === "其他2" && customStatus2 !== "") {
+                afterstatus = customStatus2;
+                document.getElementById("afterstatus").value = afterstatus;
+            }
+            
+
             let returnstatus = status;
 
             let url = new URL('https://script.google.com/macros/s/AKfycbxcIZScaDXyuD0g-CksqIsxR7DwnoqWWdGI_5CrHIJXUCGE1rYXN-w9E2ZS6R17_RawIA/exec');
@@ -503,9 +512,7 @@
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
             url.searchParams.append('tabletId', tabletId);
-            url.searchParams.append('returnstatus', returnstatus);
-
-            console.log("提交的 URL:", url.toString());
+            url.searchParams.append('afterstatus', afterstatus);
              
             fetch(url)
             // 禁用表單和顯示 loading 視窗
