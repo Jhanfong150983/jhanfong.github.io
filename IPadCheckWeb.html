@@ -247,6 +247,22 @@
             font-size: 1rem;
             color: rgb(85, 144, 144);
         }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* 增加間距 */
+        }
+        .checklist label {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 調整勾選框與文字的間距 */
+            font-size: 18px;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
         
     </style>
 </head>
@@ -300,8 +316,12 @@
 
         <h3>歸還檢查</h3>
         <h4>請完成下列檢查，並按下確認</h4>
-        <label><input type="checkbox"> 已經將登入的帳號確實登出</label><br>
-        <label><input type="checkbox"> 平板畫面正常，沒有做奇怪的設定</label><br>
+
+        <div class="checklist">
+            <label><input type="checkbox"> 已經將登入的帳號確實登出</label><br>
+            <label><input type="checkbox"> 平板畫面正常，沒有做奇怪的設定</label><br>
+        </div>
+        
         <label for="aferstatus">平板使用後狀況：</label>
         <select id="aferstatus">
             <option value="正常">正常，沒有任何問題</option>
