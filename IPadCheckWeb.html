@@ -414,7 +414,7 @@
             document.getElementById("beforeDialog").style.display = "flex";
             
             // 按下彈跳式視窗確認鍵
-            document.getElementById("beforeBtn").addEventListener("click", function() {
+            document.getElementById("before").addEventListener("click", function() {
             document.getElementById("beforeDialog").style.display = "none";
             });
         }
@@ -428,7 +428,7 @@
             
             document.getElementById("afterDialog").style.display = "flex";
             document.getElementById("problemBtn").addEventListener("click", function() {
-                document.getElementById("afterDialog").style.display = "none";
+            document.getElementById("afterDialog").style.display = "none";
             })
             
             document.getElementById("noProblemBtn").addEventListener("click", function() {
@@ -445,6 +445,7 @@
                     document.getElementById("afterstatus").value = afterstatus;
                 }
                 submitData2(className, seat, tabletId, afterstatus);
+                document.getElementById("afterDialog").style.display = "none";
             })
         }
 
