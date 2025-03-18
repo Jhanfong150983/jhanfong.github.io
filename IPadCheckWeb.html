@@ -260,19 +260,23 @@
         }
 
         .safari-indicator {
-            position: absolute;
-            top: 20px; /* 根據實際需求調整位置 */
-            right: 50px; /* 調整箭頭的橫向位置 */
-            text-align: center;
-            z-index: 1000; /* 確保箭頭在所有元素之上 */
+            display: flex;
+            align-items: center; /* 讓箭頭和文字在垂直方向上對齊 */
+            gap: 10px; /* 調整箭頭與文字的間距 */
         }
 
         .arrow-icon {
-            width: 50px; /* 圖標大小 */
+            font-size: 100px; /* 設定箭頭的大小 */
+            color: black; /* 可以改變箭頭的顏色 */
             height: auto;
             animation: bounce 1s infinite; /* 增加動態效果讓使用者注意 */
         }
-
+        
+        .safari-indicator p {
+            font-size: 30px; /* 設定文字的大小 */
+            font-weight: bold; /* 如果想讓文字更醒目 */
+        }
+        
         /* 動畫效果 */
         @keyframes bounce {
             0%, 100% {
