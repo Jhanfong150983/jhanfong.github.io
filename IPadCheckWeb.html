@@ -281,22 +281,22 @@
         <label for="tabletIdPrefix">平板編號：</label>
         
         <div class="tablet-id-container">
-        <select id="tabletIdPrefix">
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="G">G</option>
-            <option value="H">H</option>
-            <option value="I">I</option>
-            <option value="J">J</option>
-            <option value="K">K</option>
-            <option value="L">L</option>
-            <option value="M">M</option>
-            <option value="N">N</option>
-        </select>
+            <select id="tabletIdPrefix">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+                <option value="J">J</option>
+                <option value="K">K</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+            </select>
             <span class="tablet-id-separator">-</span>
             <input type="text" id="tabletIdNumber" placeholder="例如：18">
         </div>
@@ -315,7 +315,7 @@
         <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
 
         <h3>歸還檢查</h3>
-        <h4>請完成下列檢查，並按下確認</h4>
+        <h4>未確實檢查或登打者，將於下課時間置資訊組行愛校服務一周</h4>
 
         <div class="checklist">
             <label><input type="checkbox"> 已經將登入的帳號確實登出</label><br>
@@ -333,20 +333,28 @@
         
         <input type="text" id="customStatus2" class="hidden" placeholder="請描述其他狀況">
         
-        <div class="button-group">
-            <button id="report" onclick="submitreport('檢查回報')" disabled>我已負起檢查責任，確實檢查</button>
-        </div>
+        <button id="report" onclick="submitreport('檢查回報')" disabled>我已負起檢查責任，確實檢查</button>  
     </div>
 
-    <div id="customDialog" class="dialog">
+    
+    <!-- 使用前檢查彈跳視窗 -->
+    <div id="beforeDialog" class="dialog">
     <div class="dialog-content">
-        <h3>是否有問題回報？</h3>
-        <button id="problemBtn">有問題</button>
-        <button id="noProblemBtn">沒問題</button>
+        <h3>請縮小網頁視窗，並專心上課</h3>
+        <button id="beforeBtn">上完課了，我要歸還檢查</button>
     </div>
     </div>
 
-    <!-- Loading Dialog -->
+    <!-- 使用後檢查彈跳視窗 -->
+    <div id="afterDialog" class="dialog">
+    <div class="dialog-content">
+        <h3>是否確認已經確實檢查？</h3>
+        <button id="problemBtn">確實檢查完畢</button>
+        <button id="noProblemBtn">還沒我再看一下</button>
+    </div>
+    </div>
+
+    <!-- 加載彈跳視窗-->
     <div id="loadingDialog" class="loading-dialog">
         <div class="loading-content">
             <div class="spinner"></div>
