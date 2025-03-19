@@ -575,7 +575,7 @@
         }
 
         function submitData1(className, seat, tabletId, beforestatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbyHV9sHtC_IGbSprJOKkqsjpUEkxm_DAWecrgAVySKBZ_b6mP-H7COR1_CK87iWQd8fwQ/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzrn-y0-SYlRQFsJ22ugBaMtZmRtkdAIJs9Vav8TPns78Znh03HKzHYIC-cyz0tZ40JVQ/exec');
             url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -590,7 +590,7 @@
      
 
          function submitData2(className, seat, tabletId, afterstatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbyHV9sHtC_IGbSprJOKkqsjpUEkxm_DAWecrgAVySKBZ_b6mP-H7COR1_CK87iWQd8fwQ/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzrn-y0-SYlRQFsJ22ugBaMtZmRtkdAIJs9Vav8TPns78Znh03HKzHYIC-cyz0tZ40JVQ/exec');
             url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -601,6 +601,8 @@
             // 禁用表單和顯示 loading 視窗
             disableForm(true);
             showLoadingDialog();
+             
+            location.reload()
         }
     </script>
 </body>
