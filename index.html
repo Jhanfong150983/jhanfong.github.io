@@ -258,43 +258,7 @@
             width: 20px;
             height: 20px;
         }
-
-        .safari-indicator {
-            position: fixed; /* 讓箭頭固定在螢幕特定位置 */
-            top: 5px; /* 根據實際測試微調 */
-            right: 50px; /* 調整至新增分頁按鈕附近 */
-            z-index: 9999; /* 確保箭頭不被其他元素覆蓋 */
-        }
-
-        .arrow-icon {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 20px solid white; /* 設定箭頭顏色 */
-            animation: bounce 1s infinite alternate; /* 讓箭頭跳動 */
-        }
         
-        .safari-indicator p {
-            position: absolute;
-            top: 40px;
-            right: 10px;
-            color: white;
-            font-size: 18px; /* 確保字體大小適中 */
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 增加一點陰影讓文字更清楚 */
-        }
-        
-        /* 動畫效果 */
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px); /* 往上移動的距離 */
-            }
-        }
         /* 遮罩樣式 */
         #overlay {
             position: fixed;
@@ -422,13 +386,8 @@
     <!-- 使用前檢查彈跳視窗 -->
     <div id="beforeDialog" class="dialog">
         <div class="dialog-content">
-            <h3>請不要關閉這個視窗你可以開啟一個新的分頁，並專心上課</h3>
+            <h3>你可以回到主畫面並專心上課，上完課後再回來!!</h3>
             <button id="beforeBtn">上完課了，我要歸還檢查</button>
-        </div>
-        
-        <div class="safari-indicator">
-            <div class="arrow-icon">&#9658;</div>
-            <p>點擊Safari新增分頁</p>
         </div>
     </div>
 
