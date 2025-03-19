@@ -522,6 +522,13 @@
             disableForm(false);
             }, 3000);
         }
+
+        function reloadPageAfterLoading() {
+            showLoadingDialog(); // 顯示 loading 視窗
+            setTimeout(function() {
+                location.reload(); // 3 秒後頁面重整
+            }, 3000);
+        }
   
         function disableForm(disable) {
         // 禁用或啟用所有表單項目
@@ -559,9 +566,8 @@
             fetch(url)
             // 禁用表單和顯示 loading 視窗
             disableForm(true);
-            showLoadingDialog();
-             
-            location.reload()
+            reloadPageAfterLoading()
+            
         }
     </script>
 </body>
