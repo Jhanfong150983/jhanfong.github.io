@@ -483,17 +483,14 @@ function captureAndDownload() {
         link.href = URL.createObjectURL(blob);
         link.download = "photo.jpg";
 
-        // 監聽下載事件
-        link.addEventListener("click", function () {
-            photoSaved = true; // 確保學生下載照片
-            console.log("✅ 照片已下載！photoSaved =", photoSaved);
-            document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
-        });
+        // 避免跳轉，確保下載行為在當前頁面進行
+        link.style.display = "none";  // 隱藏下載鏈接
+        document.body.appendChild(link); // 加入頁面
+        link.click(); // 觸發下載
+        document.body.removeChild(link); // 移除鏈接
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href); // 釋放記憶體
+        // 釋放記憶體
+        URL.revokeObjectURL(link.href); 
     }, "image/jpeg");
 
     // 延遲檢查是否真的下載
