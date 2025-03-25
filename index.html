@@ -454,31 +454,50 @@ window.onload = function() {
 };
 
 // 🚀 **開啟攝影機**
-async function startCamera() {
-    try {
-        // 嘗試開啟相機
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        // 若相機開啟成功，隱藏重新允許相機按鈕
-        retryButton.style.display = "none";
-        
-        // 啟用表格和按鈕（相機正常）
-        enableFormElements();
-    } catch (err) {
-        console.error("相機開啟失敗:", err);
-        if (err.name === "NotAllowedError") {
-            alert("⚠️ 您拒絕了相機存取！請允許權限，或點擊『重新允許相機』按鈕。");
-            
-            // 隱藏所有畫面元素並顯示重新允許相機按鈕
-            video.style.display = "none";  // 隱藏相機畫面
-            canvas.style.display = "none";  // 隱藏畫布
-            retryButton.style.display = "block";  // 顯示重新允許相機按鈕
-
-            // 禁用表格、按鈕等元素
-            disableFormElements();
-        }
+function captureAndDownload() {
+    if (!stream) {
+        alert("⚠️ 攝影機未開啟，請允許存取相機！");
+        return;
     }
+
+    let canvas = document.getElementById("canvas");
+    let video = document.getElementById("video");
+    let context = canvas.getContext("2d");
+
+    // 擷取畫面
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // 產生圖片並準備下載
+    const imageData = canvas.toDataURL("image/jpeg");
+    const link = document.createElement("a");
+    link.href = imageData;
+    link.download = "photo.jpg";
+
+    // 設定 beforeunload 事件來監測是否有下載
+    window.addEventListener("beforeunload", function confirmDownload() {
+        photoSaved = true;
+        console.log("✅ 照片已下載！photoSaved = ", photoSaved);
+        document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
+        window.removeEventListener("beforeunload", confirmDownload); // 下載完成後移除監聽
+    });
+
+    document.body.appendChild(link);
+    link.click(); // 自動觸發下載
+    document.body.removeChild(link);
+
+    // 延遲檢查是否真的下載
+    setTimeout(function () {
+        if (!photoSaved) {
+            alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
+            document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
+        }
+    }, 2000); // 2秒後檢查
 }
+
+// 確保提交按鈕在一開始是禁用的
+document.getElementById("lockAndSubmit").disabled = true;
 
 function retryCamera() {
     location.reload(); // 重新整理頁面，讓相機詢問視窗再次彈出
