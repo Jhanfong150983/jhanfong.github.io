@@ -517,7 +517,6 @@ function captureAndDownload() {
         document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
     });
 
-    document.body.appendChild(link);
     link.click(); // 自動觸發下載
     document.body.removeChild(link);
 
@@ -528,8 +527,9 @@ function captureAndDownload() {
             alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
             document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
         }
-    }, 1000);
+    }, 2000);
 }
+document.getElementById("lockAndSubmit").disabled = true;
 
 // ⛔ **阻止未儲存照片的使用者進行下一步**
 function nextStep() {
@@ -551,12 +551,6 @@ function stopCamera() {
 
     // 使用前檢查並儲存照片
     async function lockAndSubmit() {           
-
-    // 確保照片已下載
-    if (!photoSaved) {
-        alert("⚠️ 請先拍照並下載照片！");
-        return;
-    }
 
     let className = document.getElementById("class").value.trim();
     let seat = document.getElementById("seat").value.trim();
