@@ -490,8 +490,10 @@ function captureAndDownload() {
     link.click();
     document.body.removeChild(link);
 
-    // ✅ 記錄照片已成功下載
-    photoSaved = true;
+    setTimeout(function () {
+        photoSaved = true; // 更新 photoSaved 狀態
+        alert("✅ 照片已儲存，您可以繼續進行下一步！");
+    }, 500); // 等待下載視窗出現後再更新
 }
 
 // ⛔ **阻止未儲存照片的使用者進行下一步**
