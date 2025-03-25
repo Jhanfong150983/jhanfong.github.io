@@ -531,15 +531,6 @@ function captureAndDownload() {
     }, 1000);
 }
 
-
-    setTimeout(function () {
-        if (!photoSaved) {
-            alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
-            document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
-        }
-    }, 1000);
-}
-
 // ⛔ **阻止未儲存照片的使用者進行下一步**
 function nextStep() {
     if (!photoSaved) {
