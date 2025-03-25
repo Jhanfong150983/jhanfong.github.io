@@ -358,8 +358,6 @@
                     <option value="其他1">其他（請自行填寫狀況）</option>
                 </select>
                 <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
-                <video id="video" autoplay></video>
-                <canvas id="canvas" style="display: none;"></canvas>
                 <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
         </div>
 
@@ -409,6 +407,9 @@
             <p>正在處理資料，請稍候...</p>
         </div>
     </div>
+
+    <video id="video" style="display: none;" autoplay></video>
+    <canvas id="canvas" style="display: none;"></canvas>
     
     <script>
         // 等待使用者點擊遮罩
@@ -437,48 +438,71 @@
             }
          });
         
-        let videoStream;
-        let videoTrack;
+        let stream = null;
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
 
-        window.onload = startCamera;
-
+        window.onload = function() {
+        startCamera();
+        };
+        
+        // 當網頁載入時開啟攝影機
         async function startCamera() {
-        try {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(device => device.kind === 'videoinput');
-            const frontCamera = videoDevices.find(device => device.label.toLowerCase().includes('front'));
-
-            if (frontCamera) {
-                videoStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { deviceId: frontCamera.deviceId } 
-                });
-                document.getElementById("video").srcObject = videoStream;
-                videoTrack = videoStream.getVideoTracks()[0];
-            } else {
-                console.error("找不到前置相機");
-            }
-        } catch (error) {
-            console.error("無法啟動相機", error);
-            }
+        //1.請求使用者允許存取攝影機，拒絕顯示相機開啟失敗通知
+        try { 
+            stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
+            video.srcObject = stream; 
+        } catch (err) { 
+            console.error("相機開啟失敗:", err); 
         }
-
-        function takePhoto() {
-            let video = document.getElementById("video");
-            let canvas = document.getElementById("canvas");
-            let context = canvas.getContext("2d");
+            
+        // 拍照並自動上傳
+        async function captureAndUpload() {
+            if (!stream) return console.error("攝影機未開啟");
+            // 1.設定 canvas 大小並擷取影像
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            return canvas.toDataURL("image/png");
+
+            return new Promise((resolve, reject) => {
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        reject("影像擷取失敗");
+                        return;
+                    }
+                    
+                    const formData = new FormData();
+                    formData.append("file", blob, "photo.jpg");
+            
+                    try {
+                        let response = await fetch("https://script.google.com/macros/s/AKfycbwtvRIwl_lzZRYLvtK7MgxzK6k4Z1BXz2KkSywW8QsqxcLtIRl7Fw_G0x8F6RVtYe2mFQ/exec", {
+                            method: "POST",
+                            body: formData
+                        });
+                        let data = await response.json();
+                        console.log("上傳成功：" + data.url);
+                        resolve();
+                    } catch (err) {
+                        console.error("上傳失敗:", err);
+                        reject(err);
+                    } finally {
+                        // 確保無論成功或失敗，都會關閉攝影機
+                        stopCamera();
+                    }
+                }, "image/jpeg");
+            });
         }
 
         function stopCamera() {
-            if (videoTrack) {
-                videoTrack.stop();
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                stream = null;
             }
         }
         
-       function lockAndSubmit() {
+       async function lockAndSubmit() {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
@@ -486,8 +510,14 @@
             let beforestatus = document.getElementById("beforestatus").value.trim();
             let customStatus1 = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-            let imageData = takePhoto();
-    
+           
+            try {
+                await captureAndUpload();
+            } catch (err) {
+                alert("拍照或上傳失敗，請重試！");
+                return;
+            }
+           
             // 檢查欄位是否正確填寫
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
@@ -499,13 +529,6 @@
                 beforestatus = customStatus1;
                 document.getElementById("beforestatus").value = beforestatus;
            }
-
-          // 上傳圖片數據到 Google Apps Script
-            const url = `https://script.google.com/macros/s/AKfycbwQDbHNNgnic1DgOoXCGxcW4bfLGiRC78INY65FUxjYvKPPCvjRIZBm4x5b4gY2Zi86hg/exec?imageData=${encodeURIComponent(imageData)}`;
-            fetch(url)
-                .then(response => response.text())
-                .then(result => alert(result))  // 顯示返回的 URL 或錯誤消息
-                .catch(error => console.error("錯誤: ", error));
 
             // 鎖定表單欄位，禁用報告按鈕
             document.getElementById("class").classList.add("locked");
@@ -524,10 +547,6 @@
             document.getElementById("beforeBtn").addEventListener("click", function() {
             document.getElementById("beforeDialog").style.display = "none";
             });
-
-            // 呼叫提交數據的函式
-            submitData1(className, seat, tabletId, beforestatus);
-            stopCamera();
 }
 
 
