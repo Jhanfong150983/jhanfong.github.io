@@ -522,7 +522,10 @@ function stopCamera() {
             let customStatus1 = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
    
-            // 確保照片已下載
+        // 觸發拍照並下載
+            captureAndDownload();            
+
+        // 確保照片已下載
             if (!photoSaved) {
                 alert("⚠️ 請先拍照並下載照片！");
                 return;
