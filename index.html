@@ -439,60 +439,67 @@
          });
         
         let stream = null;
-        const video = document.getElementById("video");
-        const canvas = document.getElementById("canvas");
-        const context = canvas.getContext("2d");
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+let photoSaved = false; // 紀錄是否已成功下載照片
 
-        window.onload = function() {
-            startCamera();
-        };
+window.onload = function() {
+    startCamera();
+};
 
-        // 當網頁載入時開啟攝影機
-        async function startCamera() {
-            try { 
-                stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
-                video.srcObject = stream; 
-            } catch (err) { 
-                console.error("相機開啟失敗:", err); 
-            }
-        }
+// 🚀 **開啟攝影機**
+async function startCamera() {
+    try { 
+        stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
+        video.srcObject = stream; 
+    } catch (err) { 
+        alert("⚠️ 您必須允許使用相機，否則無法進行下一步！");
+        console.error("相機開啟失敗:", err);
+    }
+}
 
-        // 拍照並存到本機
-        async function captureAndSave() {
-            if (!stream) return console.error("攝影機未開啟");
+// 📸 **拍照並讓使用者下載**
+function captureAndDownload() {
+    if (!stream) {
+        alert("⚠️ 攝影機未開啟，請允許存取相機！");
+        return;
+    }
 
-            // 設定 canvas 大小並擷取影像
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // 轉換成 Blob 並下載
-            canvas.toBlob((blob) => {
-                if (!blob) {
-                    console.error("影像擷取失敗");
-                    return;
-                }
+    // 產生圖片並下載
+    const imageData = canvas.toDataURL("image/jpeg"); 
+    const link = document.createElement("a");
+    link.href = imageData;
+    link.download = "photo.jpg";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-                // 產生本機下載連結
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "photo.jpg";  // 檔案名稱
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+    // ✅ 記錄照片已成功下載
+    photoSaved = true;
+}
 
-                console.log("照片已儲存到 iPad 本機");
-            }, "image/jpeg");
-        }
+// ⛔ **阻止未儲存照片的使用者進行下一步**
+function nextStep() {
+    if (!photoSaved) {
+        alert("⚠️ 請先下載照片，才能繼續！");
+        return;
+    }
+    alert("✅ 照片已儲存，您可以繼續進行下一步！");
+}
 
-        // 停止攝影機
-        function stopCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-                stream = null;
-            }
-        }
+// 🛑 **停止攝影機**
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        stream = null;
+    }
+}
 
         // 使用前檢查並儲存照片
         async function lockAndSubmit() {
@@ -504,10 +511,9 @@
             let customStatus1 = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
    
-            try {
-                await captureAndSave();
-            } catch (err) {
-                alert("拍照失敗，請重試！");
+            // 確保照片已下載
+            if (!photoSaved) {
+                alert("⚠️ 請先拍照並下載照片！");
                 return;
             }
    
