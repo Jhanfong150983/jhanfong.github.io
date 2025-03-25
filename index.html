@@ -455,6 +455,7 @@
             video.srcObject = stream; 
         } catch (err) { 
             console.error("相機開啟失敗:", err); 
+       }
         }
             
         // 拍照並自動上傳
@@ -547,7 +548,7 @@
             document.getElementById("beforeBtn").addEventListener("click", function() {
             document.getElementById("beforeDialog").style.display = "none";
             });
-}
+        }
 
 
         function submitreport(status) {
