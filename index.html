@@ -499,33 +499,36 @@
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // 產生圖片並準備下載
-    const imageData = canvas.toDataURL("image/jpeg");
-    const link = document.createElement("a");
-    link.href = imageData;
-    link.download = "photo.jpg";
+    // 產生圖片 Blob
+    canvas.toBlob(function (blob) {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "photo.jpg";
 
-    // 設定點擊事件來確認是否下載
-    link.addEventListener("click", function () {
-        setTimeout(() => {
-            photoSaved = true; // 確認下載完成
-            console.log("✅ 照片已下載！photoSaved = ", photoSaved);
-            document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
-        }, 1000); // 1秒後設定 photoSaved 避免過快執行
-    });
+        // 監聽下載事件
+        link.addEventListener("click", function () {
+            setTimeout(() => {
+                photoSaved = true;
+                console.log("✅ 照片已下載！photoSaved =", photoSaved);
+                document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
+            }, 1000);
+        });
 
-    document.body.appendChild(link);
-    link.click(); // 自動觸發下載
-    document.body.removeChild(link);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href); // 釋放記憶體
+    }, "image/jpeg");
 
-    // 2 秒後檢查是否真的下載
+    // 2 秒後檢查是否下載
     setTimeout(function () {
         if (!photoSaved) {
             alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
-            document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
+            document.getElementById("lockAndSubmit").disabled = true;
         }
     }, 2000);
 }
+
 
 // 確保提交按鈕在一開始是禁用的
 document.getElementById("lockAndSubmit").disabled = true;
