@@ -315,8 +315,6 @@
         <div class="section">
             <h2>關埔國小平板借用與歸還紀錄系統</h2>
         </div>
-        <br>
-        <button id="retryButton" onclick="retryCamera()" style="display: none;">🔄 重新允許相機</button>
         
         <div class="section">
             <h3>使用前檢查與紀錄</h3>
@@ -360,8 +358,7 @@
                     <option value="其他1">其他（請自行填寫狀況）</option>
                 </select>
                 <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
-                <button id="capturePhoto" onclick="captureAndDownload()">📸 人像紀錄</button>
-                <button id="lockAndSubmit" disabled>🔒 鎖定並提交借用紀錄</button>
+                <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
         </div>
 
         <div class="section">
@@ -410,10 +407,6 @@
             <p>正在處理資料，請稍候...</p>
         </div>
     </div>
-
-    <video id="video" style="display: none;" autoplay></video> 
-    <canvas id="canvas" style="display: none;"></canvas>
-
     
     <script>
         // 等待使用者點擊遮罩
@@ -441,134 +434,46 @@
              customStatus.value = "";
             }
          });
-        
-        let stream = null;
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const context = canvas.getContext("2d");
-let photoSaved = false; // 紀錄是否已成功下載照片
 
-async function startCamera() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        document.getElementById("retryButton").style.display = "none";
-    } catch (err) {
-        console.error("相機開啟失敗:", err);
-        if (err.name === "NotAllowedError") {
-            alert("⚠️ 您拒絕了相機存取！請允許權限，或點擊『重新允許相機』按鈕。");
-            document.getElementById("retryButton").style.display = "block";
+        function lockAndSubmit() {
+            let className = document.getElementById("class").value.trim();
+            let seat = document.getElementById("seat").value.trim();
+            let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
+            let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
+            let beforestatus = document.getElementById("beforestatus").value.trim();
+            let customStatus1 = document.getElementById("customStatus1").value.trim();
+            let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
+            
+            if (beforestatus === "其他1" && customStatus1 !== "") {
+                beforestatus = customStatus1;
+                document.getElementById("beforestatus").value = beforestatus;
+            }
+
+            if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
+                alert("請填寫所有必填欄位！");
+                return;
+            }
+
+            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
+            submitData1(className, seat, tabletId, beforestatus);
+            
+            document.getElementById("class").classList.add("locked");
+            document.getElementById("seat").classList.add("locked");
+            document.getElementById("tabletIdPrefix").classList.add("locked");
+            document.getElementById("tabletIdNumber").classList.add("locked");
+            document.getElementById("beforestatus").classList.add("locked");
+            document.getElementById("customStatus1").classList.add("locked");
+            document.getElementById("beforereport").disabled = true; // 禁用按鈕
+            document.getElementById("report").disabled = false; // 啟用檢查回報按鈕
+
+            // 呼叫使用前檢查彈跳視窗
+            document.getElementById("beforeDialog").style.display = "flex";
+            
+            // 按下彈跳式視窗確認鍵
+            document.getElementById("beforeBtn").addEventListener("click", function() {
+                document.getElementById("beforeDialog").style.display = "none";
+            });
         }
-    }
-}
-
-window.onload = function () {
-    startCamera();
-};
-
-function captureAndDownload() {
-    if (!stream) {
-        alert("⚠️ 攝影機未開啟，請允許存取相機！");
-        return;
-    }
-
-    // 擷取畫面
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // 產生圖片 Blob
-    canvas.toBlob(function (blob) {
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "photo.jpg";
-
-        // 避免跳轉，確保下載行為在當前頁面進行
-        link.style.display = "none";  // 隱藏下載鏈接
-        document.body.appendChild(link); // 加入頁面
-        link.click(); // 觸發下載
-        document.body.removeChild(link); // 移除鏈接
-
-        // 釋放記憶體
-        URL.revokeObjectURL(link.href); 
-    }, "image/jpeg");
-
-    // 延遲檢查是否真的下載
-    setTimeout(function () {
-        if (!photoSaved) {
-            alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
-            document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
-        }
-    }, 2000);
-}
-
-// 確保提交按鈕在一開始是禁用的
-document.getElementById("lockAndSubmit").disabled = true;
-
-function retryCamera() {
-    location.reload(); // 重新整理頁面，讓相機詢問視窗再次彈出
-}
-
-// ⛔ **阻止未儲存照片的使用者進行下一步**
-function nextStep() {
-    if (!photoSaved) {
-        alert("⚠️ 請先下載照片，才能繼續！");
-        return;
-    }
-    alert("✅ 照片已儲存，您可以繼續進行下一步！");
-}
-
-// 🛑 **停止攝影機**
-function stopCamera() {
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        video.srcObject = null;
-        stream = null;
-    }
-}
-
-
-    // 使用前檢查並儲存照片
-    async function lockAndSubmit() {           
-
-    let className = document.getElementById("class").value.trim();
-    let seat = document.getElementById("seat").value.trim();
-    let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
-    let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-    let beforestatus = document.getElementById("beforestatus").value.trim();
-    let customStatus1 = document.getElementById("customStatus1").value.trim();
-    let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-
-    // 檢查其他欄位是否正確填寫
-    if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
-        alert("請填寫所有必填欄位！");
-        return;
-    }
-
-    // 如果 'beforestatus' 是 '其他1' 且 'customStatus1' 有值，則替換狀態
-    if (beforestatus === "其他1" && customStatus1 !== "") {
-        beforestatus = customStatus1;
-        document.getElementById("beforestatus").value = beforestatus;
-    }
-
-    // 鎖定表單欄位，禁用報告按鈕
-    document.getElementById("class").classList.add("locked");
-    document.getElementById("seat").classList.add("locked");
-    document.getElementById("tabletIdPrefix").classList.add("locked");
-    document.getElementById("tabletIdNumber").classList.add("locked");
-    document.getElementById("beforestatus").classList.add("locked");
-    document.getElementById("customStatus1").classList.add("locked");
-    document.getElementById("beforereport").disabled = true; // 禁用按鈕
-    document.getElementById("report").disabled = false; // 啟用檢查回報按鈕
-
-    // 呼叫使用前檢查彈跳視窗
-    document.getElementById("beforeDialog").style.display = "flex";
-
-    // 按下彈跳式視窗確認鍵
-    document.getElementById("beforeBtn").addEventListener("click", function() {
-        document.getElementById("beforeDialog").style.display = "none";
-    });
-}
 
         function submitreport(status) {
              
@@ -636,7 +541,7 @@ function stopCamera() {
         }
 
         function submitData1(className, seat, tabletId, beforestatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbwQDbHNNgnic1DgOoXCGxcW4bfLGiRC78INY65FUxjYvKPPCvjRIZBm4x5b4gY2Zi86hg/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzNHNcnZ5FGl_gHkacDfgpfCorlr8AT2PaopuJucGhUynPmbuwbCDYvP3uEuSSRLScjFQ/exec');
             url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -651,7 +556,7 @@ function stopCamera() {
      
 
          function submitData2(className, seat, tabletId, afterstatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbwQDbHNNgnic1DgOoXCGxcW4bfLGiRC78INY65FUxjYvKPPCvjRIZBm4x5b4gY2Zi86hg/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbzNHNcnZ5FGl_gHkacDfgpfCorlr8AT2PaopuJucGhUynPmbuwbCDYvP3uEuSSRLScjFQ/exec');
             url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
