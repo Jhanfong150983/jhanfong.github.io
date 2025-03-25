@@ -450,12 +450,12 @@
         // 當網頁載入時開啟攝影機
         async function startCamera() {
         //1.請求使用者允許存取攝影機，拒絕顯示相機開啟失敗通知
-        try { 
+            try { 
             stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
             video.srcObject = stream; 
-        } catch (err) { 
+            } catch (err) { 
             console.error("相機開啟失敗:", err); 
-       }
+           }
         }
             
         // 拍照並自動上傳
