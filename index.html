@@ -496,27 +496,41 @@ function captureAndDownload() {
         return;
     }
 
+    let canvas = document.getElementById("canvas");
+    let video = document.getElementById("video");
+    let context = canvas.getContext("2d");
+
+    // 擷取畫面
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // 產生圖片並下載
-    const imageData = canvas.toDataURL("image/jpeg"); 
+    // 產生圖片並準備下載
+    const imageData = canvas.toDataURL("image/jpeg");
     const link = document.createElement("a");
     link.href = imageData;
     link.download = "photo.jpg";
-    
-    // 監聽下載按鈕點擊事件
-    a.addEventListener("click", function () {
-        photoSaved = true; // 確認下載了
+
+    // 監聽下載事件
+    link.addEventListener("click", function () {
+        photoSaved = true; // 確保學生下載照片
         document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
     });
 
     document.body.appendChild(link);
-    link.click();
+    link.click(); // 自動觸發下載
     document.body.removeChild(link);
 
-    // 若沒有點擊下載，photoSaved 會保持為 false
+    
+    // 等待一段時間，確認是否真的下載
+    setTimeout(function () {
+        if (!photoSaved) {
+            alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
+            document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
+        }
+    }, 1000);
+}
+
 
     setTimeout(function () {
         if (!photoSaved) {
