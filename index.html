@@ -444,57 +444,48 @@
         const context = canvas.getContext("2d");
 
         window.onload = function() {
-        startCamera();
+            startCamera();
         };
-        
+
         // 當網頁載入時開啟攝影機
         async function startCamera() {
-        //1.請求使用者允許存取攝影機，拒絕顯示相機開啟失敗通知
             try { 
-            stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
-            video.srcObject = stream; 
+                stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
+                video.srcObject = stream; 
             } catch (err) { 
-            console.error("相機開啟失敗:", err); 
-           }
+                console.error("相機開啟失敗:", err); 
+            }
         }
-            
-        // 拍照並自動上傳
-        async function captureAndUpload() {
+
+        // 拍照並存到本機
+        async function captureAndSave() {
             if (!stream) return console.error("攝影機未開啟");
-            // 1.設定 canvas 大小並擷取影像
+
+            // 設定 canvas 大小並擷取影像
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            return new Promise((resolve, reject) => {
-                canvas.toBlob(async (blob) => {
-                    if (!blob) {
-                        reject("影像擷取失敗");
-                        return;
-                    }
-                    
-                    const formData = new FormData();
-                    formData.append("file", blob, "photo.jpg");
-            
-                    try {
-                        let response = await fetch("https://script.google.com/macros/s/AKfycbxS5Hpq-xYYtPblm97OcXnpBKHQzykexL9eJvEZZj7C2VL1pm1-KojyFkH1s7gH53YaHA/exec", {
-                            method: "POST",
-                            body: formData
-                        });
-                        let data = await response.json();
-                        console.log("上傳成功：" + data.url);
-                        resolve();
-                    } catch (err) {
-                        console.error("上傳失敗:", err);
-                        reject(err);
-                    } finally {
-                        // 確保無論成功或失敗，都會關閉攝影機
-                        stopCamera();
-                    }
-                }, "image/jpeg");
-            });
+            // 轉換成 Blob 並下載
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    console.error("影像擷取失敗");
+                    return;
+                }
+
+                // 產生本機下載連結
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "photo.jpg";  // 檔案名稱
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                console.log("照片已儲存到 iPad 本機");
+            }, "image/jpeg");
         }
 
+        // 停止攝影機
         function stopCamera() {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
@@ -502,8 +493,9 @@
                 stream = null;
             }
         }
-        
-       async function lockAndSubmit() {
+
+        // 使用前檢查並儲存照片
+        async function lockAndSubmit() {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
@@ -511,14 +503,14 @@
             let beforestatus = document.getElementById("beforestatus").value.trim();
             let customStatus1 = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-           
+   
             try {
-                await captureAndUpload();
+                await captureAndSave();
             } catch (err) {
-                alert("拍照或上傳失敗，請重試！");
+                alert("拍照失敗，請重試！");
                 return;
             }
-           
+   
             // 檢查欄位是否正確填寫
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
@@ -529,7 +521,7 @@
             if (beforestatus === "其他1" && customStatus1 !== "") {
                 beforestatus = customStatus1;
                 document.getElementById("beforestatus").value = beforestatus;
-           }
+            }
 
             // 鎖定表單欄位，禁用報告按鈕
             document.getElementById("class").classList.add("locked");
@@ -543,10 +535,10 @@
 
             // 呼叫使用前檢查彈跳視窗
             document.getElementById("beforeDialog").style.display = "flex";
-    
+
             // 按下彈跳式視窗確認鍵
             document.getElementById("beforeBtn").addEventListener("click", function() {
-            document.getElementById("beforeDialog").style.display = "none";
+                document.getElementById("beforeDialog").style.display = "none";
             });
         }
 
