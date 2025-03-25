@@ -459,8 +459,6 @@ async function startCamera() {
         video.srcObject = stream;
         // 若相機開啟成功，隱藏重新允許相機按鈕
         retryButton.style.display = "none";
-        video.style.display = "block"; // 顯示相機畫面
-        canvas.style.display = "block"; // 顯示畫布
         } catch (err) {
         console.error("相機開啟失敗:", err);
         if (err.name === "NotAllowedError") {
