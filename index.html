@@ -408,8 +408,11 @@
         </div>
     </div>
 
-    <video id="video" style="display: none;" autoplay></video>
+    <video id="video" style="display: none;" autoplay></video> 
     <canvas id="canvas" style="display: none;"></canvas>
+    <br>
+    <button id="retryButton" onclick="retryCamera()" style="display: none;">🔄 重新允許相機</button>
+
     
     <script>
         // 等待使用者點擊遮罩
@@ -454,9 +457,17 @@ async function startCamera() {
         stream = await navigator.mediaDevices.getUserMedia({ video: true }); 
         video.srcObject = stream; 
     } catch (err) { 
-        alert("⚠️ 您必須允許使用相機，否則無法進行下一步！");
         console.error("相機開啟失敗:", err);
+
+        if (err.name === "NotAllowedError") {
+            alert("⚠️ 您拒絕了相機存取！請重新整理頁面，或點擊『重新允許相機』按鈕。");
+            document.getElementById("retryButton").style.display = "block"; // 顯示按鈕
+        }
     }
+}
+
+function retryCamera() {
+    location.reload(); // 重新整理頁面，讓相機詢問視窗再次彈出
 }
 
 // 📸 **拍照並讓使用者下載**
