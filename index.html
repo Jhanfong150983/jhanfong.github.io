@@ -360,6 +360,7 @@
                     <option value="其他1">其他（請自行填寫狀況）</option>
                 </select>
                 <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
+                <button id="portraitRecordButton" onclick="captureAndDownload()" style="display: block;">🖼️ 人像紀錄 - 確保是本人</button>
                 <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
         </div>
 
@@ -491,15 +492,18 @@ function captureAndDownload() {
     const link = document.createElement("a");
     link.href = imageData;
     link.download = "photo.jpg";
+    
+    // 監聽下載按鈕點擊事件
+    link.addEventListener("click", function() {
+        // 在下載按鈕點擊後，設定 photoSaved 為 true
+        photoSaved = true;
+    });
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    // 在這裡設置延遲，以確保用戶已經下載照片
-    setTimeout(() => {
-        // 確保下載後，才設置 photoSaved
-        photoSaved = true;
-    }, 1000); // 延遲1秒以等待下載完成
+    // 若沒有點擊下載，photoSaved 會保持為 false
 }
 
 // ⛔ **阻止未儲存照片的使用者進行下一步**
@@ -520,56 +524,55 @@ function stopCamera() {
     }
 }
 
-        // 使用前檢查並儲存照片
-        async function lockAndSubmit() {
-            let className = document.getElementById("class").value.trim();
-            let seat = document.getElementById("seat").value.trim();
-            let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
-            let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
-            let beforestatus = document.getElementById("beforestatus").value.trim();
-            let customStatus1 = document.getElementById("customStatus1").value.trim();
-            let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
-   
-        // 觸發拍照並下載
-            captureAndDownload();            
+    // 使用前檢查並儲存照片
+    async function lockAndSubmit() {
+    // 觸發拍照並下載
+    captureAndDownload();            
 
-        // 確保照片已下載
-            if (!photoSaved) {
-                alert("⚠️ 請先拍照並下載照片！");
-                return;
-            }
-   
-            // 檢查欄位是否正確填寫
-            if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
-                alert("請填寫所有必填欄位！");
-                return;
-            }
+    // 確保照片已下載
+    if (!photoSaved) {
+        alert("⚠️ 請先拍照並下載照片！");
+        return;
+    }
 
-            // 如果 'beforestatus' 是 '其他1' 且 'customStatus1' 有值，則替換狀態
-            if (beforestatus === "其他1" && customStatus1 !== "") {
-                beforestatus = customStatus1;
-                document.getElementById("beforestatus").value = beforestatus;
-            }
+    let className = document.getElementById("class").value.trim();
+    let seat = document.getElementById("seat").value.trim();
+    let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
+    let tabletIdNumber = document.getElementById("tabletIdNumber").value.trim();
+    let beforestatus = document.getElementById("beforestatus").value.trim();
+    let customStatus1 = document.getElementById("customStatus1").value.trim();
+    let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
 
-            // 鎖定表單欄位，禁用報告按鈕
-            document.getElementById("class").classList.add("locked");
-            document.getElementById("seat").classList.add("locked");
-            document.getElementById("tabletIdPrefix").classList.add("locked");
-            document.getElementById("tabletIdNumber").classList.add("locked");
-            document.getElementById("beforestatus").classList.add("locked");
-            document.getElementById("customStatus1").classList.add("locked");
-            document.getElementById("beforereport").disabled = true; // 禁用按鈕
-            document.getElementById("report").disabled = false; // 啟用檢查回報按鈕
+    // 檢查其他欄位是否正確填寫
+    if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
+        alert("請填寫所有必填欄位！");
+        return;
+    }
 
-            // 呼叫使用前檢查彈跳視窗
-            document.getElementById("beforeDialog").style.display = "flex";
+    // 如果 'beforestatus' 是 '其他1' 且 'customStatus1' 有值，則替換狀態
+    if (beforestatus === "其他1" && customStatus1 !== "") {
+        beforestatus = customStatus1;
+        document.getElementById("beforestatus").value = beforestatus;
+    }
 
-            // 按下彈跳式視窗確認鍵
-            document.getElementById("beforeBtn").addEventListener("click", function() {
-                document.getElementById("beforeDialog").style.display = "none";
-            });
-        }
+    // 鎖定表單欄位，禁用報告按鈕
+    document.getElementById("class").classList.add("locked");
+    document.getElementById("seat").classList.add("locked");
+    document.getElementById("tabletIdPrefix").classList.add("locked");
+    document.getElementById("tabletIdNumber").classList.add("locked");
+    document.getElementById("beforestatus").classList.add("locked");
+    document.getElementById("customStatus1").classList.add("locked");
+    document.getElementById("beforereport").disabled = true; // 禁用按鈕
+    document.getElementById("report").disabled = false; // 啟用檢查回報按鈕
 
+    // 呼叫使用前檢查彈跳視窗
+    document.getElementById("beforeDialog").style.display = "flex";
+
+    // 按下彈跳式視窗確認鍵
+    document.getElementById("beforeBtn").addEventListener("click", function() {
+        document.getElementById("beforeDialog").style.display = "none";
+    });
+}
 
         function submitreport(status) {
              
