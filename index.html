@@ -497,6 +497,8 @@ function captureAndDownload() {
     link.addEventListener("click", function() {
         // 在下載按鈕點擊後，設定 photoSaved 為 true
         photoSaved = true;
+        // 開啟提交按鈕
+        document.getElementById("submitButton").disabled = false;
     });
 
     document.body.appendChild(link);
@@ -525,9 +527,7 @@ function stopCamera() {
 }
 
     // 使用前檢查並儲存照片
-    async function lockAndSubmit() {
-    // 觸發拍照並下載
-    captureAndDownload();            
+    async function lockAndSubmit() {           
 
     // 確保照片已下載
     if (!photoSaved) {
