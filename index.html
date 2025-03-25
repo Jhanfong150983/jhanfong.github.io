@@ -360,8 +360,8 @@
                     <option value="其他1">其他（請自行填寫狀況）</option>
                 </select>
                 <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
-                <button id="portraitRecordButton" onclick="captureAndDownload()" style="display: block;">🖼️ 人像紀錄 - 確保是本人</button>
-                <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
+                <button id="capturePhoto" onclick="captureAndDownload()">📸 人像紀錄</button>
+                <button id="lockAndSubmit" disabled>🔒 鎖定並提交借用紀錄</button>
         </div>
 
         <div class="section">
@@ -484,6 +484,11 @@ function retryCamera() {
     location.reload(); // 重新整理頁面，讓相機詢問視窗再次彈出
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    // 初始狀態: 禁用「鎖定並提交借用紀錄」按鈕
+    document.getElementById("lockAndSubmit").disabled = true;
+});
 // 📸 **拍照並讓使用者下載**
 function captureAndDownload() {
     if (!stream) {
@@ -502,11 +507,9 @@ function captureAndDownload() {
     link.download = "photo.jpg";
     
     // 監聽下載按鈕點擊事件
-    link.addEventListener("click", function() {
-        // 在下載按鈕點擊後，設定 photoSaved 為 true
-        photoSaved = true;
-        // 開啟提交按鈕
-        document.getElementById("submitButton").disabled = false;
+    a.addEventListener("click", function () {
+        photoSaved = true; // 確認下載了
+        document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
     });
 
     document.body.appendChild(link);
@@ -514,6 +517,13 @@ function captureAndDownload() {
     document.body.removeChild(link);
 
     // 若沒有點擊下載，photoSaved 會保持為 false
+
+    setTimeout(function () {
+        if (!photoSaved) {
+            alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
+            document.getElementById("lockAndSubmit").disabled = true; // 保持提交按鈕無效
+        }
+    }, 1000);
 }
 
 // ⛔ **阻止未儲存照片的使用者進行下一步**
