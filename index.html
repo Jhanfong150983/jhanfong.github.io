@@ -358,6 +358,8 @@
                     <option value="其他1">其他（請自行填寫狀況）</option>
                 </select>
                 <input type="text" id="customStatus1" class="hidden" placeholder="請描述其他狀況">
+                <video id="video" autoplay></video>
+                <canvas id="canvas" style="display: none;"></canvas>
                 <button id="beforereport" onclick="lockAndSubmit()">鎖定並提交借用紀錄</button>
         </div>
 
@@ -434,7 +436,46 @@
              customStatus.value = "";
             }
          });
+        
+        let videoStream;
+        let videoTrack;
 
+        async function startCamera() {
+        try {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
+            const frontCamera = videoDevices.find(device => device.label.toLowerCase().includes('front'));
+
+            if (frontCamera) {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { deviceId: frontCamera.deviceId } 
+                });
+                document.getElementById("video").srcObject = videoStream;
+                videoTrack = videoStream.getVideoTracks()[0];
+            } else {
+                console.error("找不到前置相機");
+            }
+        } catch (error) {
+            console.error("無法啟動相機", error);
+            }
+        }
+
+        function takePhoto() {
+            let video = document.getElementById("video");
+            let canvas = document.getElementById("canvas");
+            let context = canvas.getContext("2d");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            return canvas.toDataURL("image/png");
+        }
+
+        function stopCamera() {
+            if (videoTrack) {
+                videoTrack.stop();
+            }
+        }
+        
         function lockAndSubmit() {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
@@ -443,6 +484,14 @@
             let beforestatus = document.getElementById("beforestatus").value.trim();
             let customStatus1 = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
+            let imageData = takePhoto();
+            
+            stopCamera();
+            google.script.run.withSuccessHandler(function(url) {
+                alert("圖片已上傳: " + url);
+            }).uploadToGoogleDrive(imageData);
+
+            window.onload = startCamera;
             
             if (beforestatus === "其他1" && customStatus1 !== "") {
                 beforestatus = customStatus1;
@@ -541,7 +590,7 @@
         }
 
         function submitData1(className, seat, tabletId, beforestatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbwuFylo98aaSiCGU_n20MCPRkATKGhrb2un5i-h3M-umgYgS78zaqQfY9UV0rF98abC/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbxfLjQFK0Nisqn1eowWKsOuncHarUBNyEot3NlIKlrlWGaKkuiFT-KefW71M-RWTjAh0Q/exec');
             url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -556,7 +605,7 @@
      
 
          function submitData2(className, seat, tabletId, afterstatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbwuFylo98aaSiCGU_n20MCPRkATKGhrb2un5i-h3M-umgYgS78zaqQfY9UV0rF98abC/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbxfLjQFK0Nisqn1eowWKsOuncHarUBNyEot3NlIKlrlWGaKkuiFT-KefW71M-RWTjAh0Q/exec');
             url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
