@@ -512,11 +512,13 @@ function captureAndDownload() {
     link.download = "photo.jpg";
 
     // 監聽下載事件
-    link.addEventListener("click", function () {
+    link.addEventListener("mousedown", function () {
         photoSaved = true; // 確保學生下載照片
+        console.log("✅ 照片已下載！photoSaved = ", photoSaved);
         document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
     });
 
+    document.body.appendChild(link);
     link.click(); // 自動觸發下載
     document.body.removeChild(link);
 
