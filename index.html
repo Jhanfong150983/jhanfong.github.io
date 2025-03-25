@@ -453,6 +453,48 @@ window.onload = function() {
     startCamera();
 };
 
+async function startCamera() {
+    try {
+        // 嘗試開啟相機
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        // 若相機開啟成功，隱藏重新允許相機按鈕
+        retryButton.style.display = "none";
+        
+        // 啟用表格和按鈕（相機正常）
+        enableFormElements();
+    } catch (err) {
+        console.error("相機開啟失敗:", err);
+        if (err.name === "NotAllowedError") {
+            alert("⚠️ 您拒絕了相機存取！請允許權限，或點擊『重新允許相機』按鈕。");
+            
+            // 隱藏所有畫面元素並顯示重新允許相機按鈕
+            video.style.display = "none";  // 隱藏相機畫面
+            canvas.style.display = "none";  // 隱藏畫布
+            retryButton.style.display = "block";  // 顯示重新允許相機按鈕
+
+            // 禁用表格、按鈕等元素
+            disableFormElements();
+        }
+    }
+}
+
+// 禁用所有表單元素和按鈕
+function disableFormElements() {
+    let elements = document.querySelectorAll("input, button, select, textarea");
+    elements.forEach(element => {
+        element.disabled = true;
+    });
+}
+
+// 啟用所有表單元素和按鈕
+function enableFormElements() {
+    let elements = document.querySelectorAll("input, button, select, textarea");
+    elements.forEach(element => {
+        element.disabled = false;
+    });
+}
+        
 // 🚀 **開啟攝影機**
 function captureAndDownload() {
     if (!stream) {
