@@ -443,40 +443,34 @@
          });
         
         let stream = null;
-        const video = document.getElementById("video");
-        const canvas = document.getElementById("canvas");
-        const context = canvas.getContext("2d");
-        const retryButton = document.getElementById("retryButton");
-        let photoSaved = false; // 紀錄是否已成功下載照片
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+let photoSaved = false; // 紀錄是否已成功下載照片
 
-        async function startCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById("video").srcObject = stream;
-                document.getElementById("retryButton").style.display = "none";
-            } catch (err) {
-                console.error("相機開啟失敗:", err);
-                if (err.name === "NotAllowedError") {
-                    alert("⚠️ 您拒絕了相機存取！請允許權限，或點擊『重新允許相機』按鈕。");
-                    document.getElementById("retryButton").style.display = "block";
-                }
-            }
+async function startCamera() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        document.getElementById("retryButton").style.display = "none";
+    } catch (err) {
+        console.error("相機開啟失敗:", err);
+        if (err.name === "NotAllowedError") {
+            alert("⚠️ 您拒絕了相機存取！請允許權限，或點擊『重新允許相機』按鈕。");
+            document.getElementById("retryButton").style.display = "block";
         }
-        
-        window.onload = function () {
-        startCamera();
-        };
-        
-        // 🚀 **開啟攝影機**
-        function captureAndDownload() {
+    }
+}
+
+window.onload = function () {
+    startCamera();
+};
+
+function captureAndDownload() {
     if (!stream) {
         alert("⚠️ 攝影機未開啟，請允許存取相機！");
         return;
     }
-
-    let canvas = document.getElementById("canvas");
-    let video = document.getElementById("video");
-    let context = canvas.getContext("2d");
 
     // 擷取畫面
     canvas.width = video.videoWidth;
@@ -491,11 +485,9 @@
 
         // 監聽下載事件
         link.addEventListener("click", function () {
-            setTimeout(() => {
-                photoSaved = true;
-                console.log("✅ 照片已下載！photoSaved =", photoSaved);
-                document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
-            }, 1000);
+            photoSaved = true; // 確保學生下載照片
+            console.log("✅ 照片已下載！photoSaved =", photoSaved);
+            document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
         });
 
         document.body.appendChild(link);
@@ -504,63 +496,7 @@
         URL.revokeObjectURL(link.href); // 釋放記憶體
     }, "image/jpeg");
 
-    // 2 秒後檢查是否下載
-    setTimeout(function () {
-        if (!photoSaved) {
-            alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
-            document.getElementById("lockAndSubmit").disabled = true;
-        }
-    }, 2000);
-}
-
-
-// 確保提交按鈕在一開始是禁用的
-document.getElementById("lockAndSubmit").disabled = true;
-
-function retryCamera() {
-    location.reload(); // 重新整理頁面，讓相機詢問視窗再次彈出
-}
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    // 初始狀態: 禁用「鎖定並提交借用紀錄」按鈕
-    document.getElementById("lockAndSubmit").disabled = true;
-});
-// 📸 **拍照並讓使用者下載**
-function captureAndDownload() {
-    if (!stream) {
-        alert("⚠️ 攝影機未開啟，請允許存取相機！");
-        return;
-    }
-
-    let canvas = document.getElementById("canvas");
-    let video = document.getElementById("video");
-    let context = canvas.getContext("2d");
-
-    // 擷取畫面
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // 產生圖片並準備下載
-    const imageData = canvas.toDataURL("image/jpeg");
-    const link = document.createElement("a");
-    link.href = imageData;
-    link.download = "photo.jpg";
-
-    // 監聽下載事件
-    link.addEventListener("mousedown", function () {
-        photoSaved = true; // 確保學生下載照片
-        console.log("✅ 照片已下載！photoSaved = ", photoSaved);
-        document.getElementById("lockAndSubmit").disabled = false; // 解鎖提交按鈕
-    });
-
-    document.body.appendChild(link);
-    link.click(); // 自動觸發下載
-    document.body.removeChild(link);
-
-    
-    // 等待一段時間，確認是否真的下載
+    // 延遲檢查是否真的下載
     setTimeout(function () {
         if (!photoSaved) {
             alert("⚠️ 您尚未下載照片，請重新拍照並下載！");
@@ -568,7 +504,13 @@ function captureAndDownload() {
         }
     }, 2000);
 }
+
+// 確保提交按鈕在一開始是禁用的
 document.getElementById("lockAndSubmit").disabled = true;
+
+function retryCamera() {
+    location.reload(); // 重新整理頁面，讓相機詢問視窗再次彈出
+}
 
 // ⛔ **阻止未儲存照片的使用者進行下一步**
 function nextStep() {
@@ -587,6 +529,7 @@ function stopCamera() {
         stream = null;
     }
 }
+
 
     // 使用前檢查並儲存照片
     async function lockAndSubmit() {           
