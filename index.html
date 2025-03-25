@@ -440,6 +440,8 @@
         let videoStream;
         let videoTrack;
 
+        window.onload = startCamera;
+
         async function startCamera() {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
@@ -476,7 +478,7 @@
             }
         }
         
-        function lockAndSubmit() {
+       function lockAndSubmit() {
             let className = document.getElementById("class").value.trim();
             let seat = document.getElementById("seat").value.trim();
             let tabletIdPrefix = document.getElementById("tabletIdPrefix").value.trim();
@@ -485,27 +487,27 @@
             let customStatus1 = document.getElementById("customStatus1").value.trim();
             let tabletId = `${tabletIdPrefix}-${tabletIdNumber}`;
             let imageData = takePhoto();
-            
-            stopCamera();
-            google.script.run.withSuccessHandler(function(url) {
-                alert("圖片已上傳: " + url);
-            }).uploadToGoogleDrive(imageData);
-
-            window.onload = startCamera;
-            
-            if (beforestatus === "其他1" && customStatus1 !== "") {
-                beforestatus = customStatus1;
-                document.getElementById("beforestatus").value = beforestatus;
-            }
-
+    
+            // 檢查欄位是否正確填寫
             if (!className || !seat || !tabletIdPrefix || !tabletIdNumber || !beforestatus) {
                 alert("請填寫所有必填欄位！");
                 return;
             }
 
-            // 模擬上傳成功後，這裡可以放實際的上傳程式碼
-            submitData1(className, seat, tabletId, beforestatus);
-            
+            // 如果 'beforestatus' 是 '其他1' 且 'customStatus1' 有值，則替換狀態
+            if (beforestatus === "其他1" && customStatus1 !== "") {
+                beforestatus = customStatus1;
+                document.getElementById("beforestatus").value = beforestatus;
+           }
+
+          // 上傳圖片數據到 Google Apps Script
+            const url = `https://script.google.com/macros/s/AKfycbwQDbHNNgnic1DgOoXCGxcW4bfLGiRC78INY65FUxjYvKPPCvjRIZBm4x5b4gY2Zi86hg/exec?imageData=${encodeURIComponent(imageData)}`;
+            fetch(url)
+                .then(response => response.text())
+                .then(result => alert(result))  // 顯示返回的 URL 或錯誤消息
+                .catch(error => console.error("錯誤: ", error));
+
+            // 鎖定表單欄位，禁用報告按鈕
             document.getElementById("class").classList.add("locked");
             document.getElementById("seat").classList.add("locked");
             document.getElementById("tabletIdPrefix").classList.add("locked");
@@ -517,12 +519,17 @@
 
             // 呼叫使用前檢查彈跳視窗
             document.getElementById("beforeDialog").style.display = "flex";
-            
+    
             // 按下彈跳式視窗確認鍵
             document.getElementById("beforeBtn").addEventListener("click", function() {
-                document.getElementById("beforeDialog").style.display = "none";
+            document.getElementById("beforeDialog").style.display = "none";
             });
-        }
+
+            // 呼叫提交數據的函式
+            submitData1(className, seat, tabletId, beforestatus);
+            stopCamera();
+}
+
 
         function submitreport(status) {
              
@@ -590,7 +597,7 @@
         }
 
         function submitData1(className, seat, tabletId, beforestatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbxfLjQFK0Nisqn1eowWKsOuncHarUBNyEot3NlIKlrlWGaKkuiFT-KefW71M-RWTjAh0Q/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbwQDbHNNgnic1DgOoXCGxcW4bfLGiRC78INY65FUxjYvKPPCvjRIZBm4x5b4gY2Zi86hg/exec');
             url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -605,7 +612,7 @@
      
 
          function submitData2(className, seat, tabletId, afterstatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbxfLjQFK0Nisqn1eowWKsOuncHarUBNyEot3NlIKlrlWGaKkuiFT-KefW71M-RWTjAh0Q/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbwQDbHNNgnic1DgOoXCGxcW4bfLGiRC78INY65FUxjYvKPPCvjRIZBm4x5b4gY2Zi86hg/exec');
             url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
