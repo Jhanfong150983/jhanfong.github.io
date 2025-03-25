@@ -466,22 +466,6 @@
         window.onload = function () {
         startCamera();
         };
-
-        // 禁用所有表單元素和按鈕
-        function disableFormElements() {
-            let elements = document.querySelectorAll("input, button, select, textarea");
-            elements.forEach(element => {
-            element.disabled = true;
-            });
-        }
-
-        // 啟用所有表單元素和按鈕
-        function enableFormElements() {
-            let elements = document.querySelectorAll("input, button, select, textarea");
-            elements.forEach(element => {
-            element.disabled = false;
-            });
-        }
         
         // 🚀 **開啟攝影機**
         function captureAndDownload() {
