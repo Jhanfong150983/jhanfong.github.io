@@ -347,7 +347,7 @@
                         <option value="N">N</option>
                     </select>
                     <span class="tablet-id-separator">-</span>
-                    <input type="text" id="tabletIdNumber" placeholder="例如：18">
+                    <input type="text" id="tabletIdNumber" placeholder="例如：18" pattern="\d{2}" required>
                 </div>
             <label for="beforestatus">平板使用前狀況：</label>
                 <select id="beforestatus">
@@ -541,7 +541,7 @@
         }
 
         function submitData1(className, seat, tabletId, beforestatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbzLCctcrxZ-r4ZeMb4uqdU1cCzVb3gxjDslLSnUXCsqol6wa4YVP0cubu3QdDYcgu5IEQ/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbyGBRU9qRQ9psefNOacTkfGM2P5JC_Ap6lf8NqDJuJDpLZxRS6YDcRtE0_VIWAkrLcMtw/exec');
             url.searchParams.append('action', 'before');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
@@ -556,7 +556,7 @@
      
 
          function submitData2(className, seat, tabletId, afterstatus) {
-            let url = new URL('https://script.google.com/macros/s/AKfycbzLCctcrxZ-r4ZeMb4uqdU1cCzVb3gxjDslLSnUXCsqol6wa4YVP0cubu3QdDYcgu5IEQ/exec');
+            let url = new URL('https://script.google.com/macros/s/AKfycbyGBRU9qRQ9psefNOacTkfGM2P5JC_Ap6lf8NqDJuJDpLZxRS6YDcRtE0_VIWAkrLcMtw/exec');
             url.searchParams.append('action', 'return');
             url.searchParams.append('className', className);
             url.searchParams.append('seat', seat);
