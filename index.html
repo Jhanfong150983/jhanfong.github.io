@@ -632,30 +632,39 @@
         const rows = text.trim().split('\n').map(row => row.split('\t'));
         const headers = rows[0];
         const dataRows = rows.slice(1);
-        const filtered = dataRows
+        const index = {
+            class: headers.indexOf('班級'),
+            seat: headers.indexOf('座號'),
+            device: headers.indexOf('平板序號'),
+            borrow: headers.indexOf('借用狀況'),
+            borrowTime: headers.indexOf('借用紀錄時間'),
+            return: headers.indexOf('歸還狀況'),
+            returnTime: headers.indexOf('歸還紀錄時間')
+          };
             
-            .filter(r => r[0] === today && r[1] === classInput)
+            onst filtered = dataRows
+            .filter(r => r[index.class] === classInput && r[index.borrowTime].startsWith(today))
             .map(r => ({
-              seat: parseInt(r[2], 10),
-              device: r[3],
-              borrow: toCheckmark(r[4]),
-              return: toCheckmark(r[5])
+              seat: parseInt(r[index.seat], 10),
+              device: r[index.device],
+              borrow: toCheckmark(r[index.borrow]),
+              return: toCheckmark(r[index.return])
             }))
             .sort((a, b) => a.seat - b.seat);
 
-            const tbody = document.querySelector('#resultTable tbody');
-            tbody.innerHTML = '';
+          const tbody = document.querySelector('#resultTable tbody');
+          tbody.innerHTML = '';
 
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4">查無資料</td></tr>';
-                return;
-            }
+          if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4">查無資料</td></tr>';
+            return;
+          }
 
-            for (const row of filtered) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${row.seat}</td><td>${row.device}</td><td>${row.borrow}</td><td>${row.return}</td>`;
-                tbody.appendChild(tr);
-            }
+          for (const row of filtered) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${row.seat}</td><td>${row.device}</td><td>${row.borrow}</td><td>${row.return}</td>`;
+            tbody.appendChild(tr);
+          }
         }
     </script>
 </body>
