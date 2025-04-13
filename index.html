@@ -615,7 +615,47 @@
             // 禁用表單和顯示 loading 視窗
             disableForm(true);
             reloadPageAfterLoading()
+        }
+
+
+        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwgESy1Vt6bnk4oGuZ5AFBmSUn4GdeOdLenXzgeftiyGRj2JvBqAWsyIoHHpnlPPOpWog/exec';
+        
+        function toCheckmark(value) {
+          return value === '是' ? '✔' : '✘';
+        }
+
+        async function fetchData() {
+        const classInput = document.getElementById('classInput').value.trim();
+        const today = new Date().toISOString().split('T')[0];
+        const response = await fetch(SHEET_URL);
+        const text = await response.text();
+        const rows = text.trim().split('\n').map(row => row.split('\t'));
+        const headers = rows[0];
+        const dataRows = rows.slice(1);
+        const filtered = dataRows
             
+            .filter(r => r[0] === today && r[1] === classInput)
+            .map(r => ({
+              seat: parseInt(r[2], 10),
+              device: r[3],
+              borrow: toCheckmark(r[4]),
+              return: toCheckmark(r[5])
+            }))
+            .sort((a, b) => a.seat - b.seat);
+
+            const tbody = document.querySelector('#resultTable tbody');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">查無資料</td></tr>';
+                return;
+            }
+
+            for (const row of filtered) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.seat}</td><td>${row.device}</td><td>${row.borrow}</td><td>${row.return}</td>`;
+                tbody.appendChild(tr);
+            }
         }
     </script>
 </body>
